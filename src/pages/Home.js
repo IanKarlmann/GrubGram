@@ -1,10 +1,10 @@
 import Header from "../components/Header";
+import Topbar from "../components/topbar/Topbar";
 
-export default function(){
+export default function Home(){
     return (
         <>
-            <Header />
-            <h2>Home Page</h2>
+            <Topbar />
         </>
     )
 }
