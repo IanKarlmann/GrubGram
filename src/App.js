@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+
+    const handleOnSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            let result = await fetch('http://localhost:5000/register', {
+                method: "post",
+                body: JSON.stringify({ name, email }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!result.ok) {
+                throw new Error(`HTTP error! status: ${result.status}`);
+            }
+            result = await result.json();
+            console.warn(result);
+            if (result) {
+                alert("Data saved successfully");
+                setEmail("");
+                setName("");
+            }
+        } catch (error) {
+            console.error("Error during fetch:", error);
+            alert("Failed to save data");
+        }
+    };
+
+    return (
+        <>
+            <h1>This is React WebApp</h1>
+            <form onSubmit={handleOnSubmit}>
+                <input type="text" placeholder="name" 
+                    value={name} onChange={(e) => setName(e.target.value)} />
+                <input type="email" placeholder="email" 
+                    value={email} onChange={(e) => setEmail(e.target.value)} />
+                <button type="submit">submit</button>
+            </form>
+        </>
+    );
 }
 
 export default App;
