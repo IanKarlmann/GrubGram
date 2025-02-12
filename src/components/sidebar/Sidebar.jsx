@@ -100,6 +100,15 @@ function DashboardLayoutBasic(props) {
       // preview-start
       <AppProvider
         navigation={NAVIGATION}
+        branding={{
+            logo: <img 
+                    src={process.env.PUBLIC_URL + '/grub_logo.jpg'} 
+                    alt="Logo"
+                    style={{width: '50px', height: 'auto'}}
+            />,
+            title: '',
+            homeUrl: '/home',
+        }}
         router={router}
         theme={demoTheme}
         window={demoWindow}
