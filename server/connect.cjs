@@ -1,24 +1,24 @@
-const { MongoClient } = require("mongodb")
-require("dotenv").config({path: "./config.env"})
+const mongoose = require("mongoose");
+require("dotenv").config({ path: "./config.env" });
 
-async function main(){
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.ATLAS_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
 
-    const Db = process.env.ATLAS_URI
-    const client = new MongoClient(Db)
+    console.log("MongoDB Connected Successfully");
 
-    try {
-        await client.connect()
-        const collections = await client.db("user_info").collections()
-        collections.forEach((collection) => console.log(collection.s.namespace.collection))
-    }
-    catch(e){
-        console.error(e)
-    }
-    finally{
-        await client.close()
-    }
-}
+    // List available collections (Optional, for debugging)
+    const collections = await mongoose.connection.db.collections();
+    collections.forEach((collection) =>
+      console.log(`Collection: ${collection.collectionName}`)
+    );
+  } catch (error) {
+    console.error("MongoDB Connection Failed:", error);
+    process.exit(1);
+  }
+};
 
-main()
-
-// code prints collections in the user_info database to terminal
+module.exports = connectDB;

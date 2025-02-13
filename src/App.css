@@ -36,3 +36,69 @@
     transform: rotate(360deg);
   }
 }
+
+/* Authentication Page Styling */
+.auth-container {
+  width: 320px;
+  margin: 50px auto;
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  background-color: #282c34; 
+  color: white;
+}
+
+.auth-container h2 {
+  margin-bottom: 15px;
+  color: white; /* Match existing text color */
+}
+
+.auth-container input {
+  width: 90%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #61dafb;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: #3a3f47;
+  color: white;
+}
+
+.auth-container input::placeholder {
+  color: #b0b0b0;
+}
+
+.auth-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #61dafb; /* Match App link color */
+  color: #282c34;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.auth-container button:hover {
+  background-color: #4fa3d1;
+}
+
+.auth-container p {
+  margin-top: 10px;
+  color: white;
+}
+
+.auth-container a {
+  color: #61dafb;
+  text-decoration: none;
+}
+
+.auth-container a:hover {
+  text-decoration: underline;
+}
+.error-message {
+  color: red;
+  margin-bottom: 10px;
+}
