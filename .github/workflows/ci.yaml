@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - homepage
+      - login/registration
   pull_request:
     branches:
       - main
