@@ -4,7 +4,7 @@ name: React CI
 on:
   push:
     branches:
-      - main
+      - homepage
   pull_request:
     branches:
       - main
