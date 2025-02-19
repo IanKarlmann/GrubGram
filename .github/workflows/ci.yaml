@@ -12,7 +12,7 @@ on:
 
 jobs:
   build_homepage:
-    runs-on: windows-latest  # Change based on your environment
+    runs-on: windows-latest  # Use Windows as the runner
 
     steps:
       - name: Checkout homepage branch
@@ -32,13 +32,13 @@ jobs:
         run: npm run build
 
       - name: Upload homepage build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2  # Correct version for Windows
         with:
           name: homepage-build
-          path: build/
+          path: build/  # Path to the build directory
 
   build_login_registration:
-    runs-on: windows-latest  # Or another OS as needed
+    runs-on: windows-latest  # Use Windows as the runner
 
     steps:
       - name: Checkout login/registration branch
@@ -58,42 +58,42 @@ jobs:
         run: npm run build
 
       - name: Upload login/registration build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2  # Correct version for Windows
         with:
           name: login-registration-build
-          path: build/
+          path: build/  # Path to the build directory
 
   compare_builds:
-    runs-on: windows-latest  # Or any other environment where you want to run the diff
+    runs-on: windows-latest  # Use Windows as the runner
 
     needs: [build_homepage, build_login_registration]  # This ensures the comparison job waits for the builds to finish
 
     steps:
       - name: Download homepage build artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2  # Correct version for Windows
         with:
           name: homepage-build
 
       - name: Download login/registration build artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2  # Correct version for Windows
         with:
           name: login-registration-build
 
       - name: Install diffoscope
         run: |
-          sudo apt-get update
-          sudo apt-get install -y diffoscope
+          choco install diffoscope  # Use Chocolatey to install Diffoscope on Windows
 
       - name: Compare the two builds
         run: |
-          diffoscope homepage-build/ login-registration-build/ > diff_output.txt
-          cat diff_output.txt  # This shows the diff output in the logs
+          diffoscope homepage-build\ login-registration-build\ > diff_output.txt
+          type diff_output.txt  # Show the diff output in the logs
 
       - name: Upload diff result
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2  # Correct version for Windows
         with:
           name: diff-output
           path: diff_output.txt  # Upload the diff result as an artifact if needed
+
 
 
 
