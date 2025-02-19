@@ -31,7 +31,7 @@ jobs:
         run: dir  # This lists the contents in Windows. For Linux/macOS, use 'ls' instead.
 
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build-artifacts
           path: build/  # Make sure this is the correct path
