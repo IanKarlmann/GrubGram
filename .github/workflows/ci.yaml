@@ -1,0 +1,37 @@
+name: React CI
+
+# Trigger the workflow on push or pull requests to the main branch
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest  # can switch
+    
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.17.0'  # Specify the version of Node.js (change if needed)
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Run tests (make sure you have test scripts defined in your package.json)
+      #- name: Run tests
+      #  run: npm test -- --ci --silent --coverage  # This runs tests with coverage (you can adjust options if needed)
+
+      # Step 5: Build the React app
+      - name: Build React app
+        run: npm run build  # This creates the production build in the build/ directory
