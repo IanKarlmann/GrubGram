@@ -4,26 +4,96 @@ on:
   push:
     branches:
       - homepage
+      - login/registration
   pull_request:
     branches:
       - homepage
+      - login/registration
 
 jobs:
-  build:
-    runs-on: windows-latest  # or any other OS
+  build_homepage:
+    runs-on: windows-latest  # Change based on your environment
 
     steps:
-      - name: Checkout repository
+      - name: Checkout homepage branch
         uses: actions/checkout@v2
+        with:
+          ref: homepage  # Ensure you checkout the homepage branch
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.17.0'  # Ensure you're using the right Node version
+          node-version: '20.17.0'  # Ensure you use the correct version of Node.js
 
       - name: Install dependencies
         run: npm install
 
       - name: Build React app
-        run: npm run build  # This should generate the build/ directory
+        run: npm run build
+
+      - name: Upload homepage build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: homepage-build
+          path: build/
+
+  build_login_registration:
+    runs-on: windows-latest  # Or another OS as needed
+
+    steps:
+      - name: Checkout login/registration branch
+        uses: actions/checkout@v2
+        with:
+          ref: login/registration  # Ensure you checkout the login/registration branch
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.17.0'  # Use the correct Node version
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build React app
+        run: npm run build
+
+      - name: Upload login/registration build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: login-registration-build
+          path: build/
+
+  compare_builds:
+    runs-on: windows-latest  # Or any other environment where you want to run the diff
+
+    needs: [build_homepage, build_login_registration]  # This ensures the comparison job waits for the builds to finish
+
+    steps:
+      - name: Download homepage build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: homepage-build
+
+      - name: Download login/registration build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: login-registration-build
+
+      - name: Install diffoscope
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y diffoscope
+
+      - name: Compare the two builds
+        run: |
+          diffoscope homepage-build/ login-registration-build/ > diff_output.txt
+          cat diff_output.txt  # This shows the diff output in the logs
+
+      - name: Upload diff result
+        uses: actions/upload-artifact@v3
+        with:
+          name: diff-output
+          path: diff_output.txt  # Upload the diff result as an artifact if needed
+
+
 
