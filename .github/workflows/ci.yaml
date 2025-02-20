@@ -4,96 +4,33 @@ on:
   push:
     branches:
       - homepage
-      - login/registration
   pull_request:
     branches:
       - homepage
-      - login/registration
 
 jobs:
-  build_homepage:
-    runs-on: windows-latest  # Use Windows as the runner
+  build:
+    runs-on: windows-latest  # or any other OS
 
     steps:
-      - name: Checkout homepage branch
+      - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          ref: homepage  # Ensure you checkout the homepage branch
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.17.0'  # Ensure you use the correct version of Node.js
+          node-version: '20.17.0'  # Ensure you're using the right Node version
 
       - name: Install dependencies
         run: npm install
 
       - name: Build React app
-        run: npm run build
+        run: npm run build  # This should generate the build/ directory
 
-      - name: Upload homepage build artifact
-        uses: actions/upload-artifact@v2  # Correct version for Windows
-        with:
-          name: homepage-build
-          path: build/  # Path to the build directory
-
-  build_login_registration:
-    runs-on: windows-latest  # Use Windows as the runner
-
-    steps:
-      - name: Checkout login/registration branch
-        uses: actions/checkout@v2
-        with:
-          ref: login/registration  # Ensure you checkout the login/registration branch
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20.17.0'  # Use the correct Node version
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build React app
-        run: npm run build
-
-      - name: Upload login/registration build artifact
-        uses: actions/upload-artifact@v2  # Correct version for Windows
-        with:
-          name: login-registration-build
-          path: build/  # Path to the build directory
-
-  compare_builds:
-    runs-on: windows-latest  # Use Windows as the runner
-
-    needs: [build_homepage, build_login_registration]  # This ensures the comparison job waits for the builds to finish
-
-    steps:
-      - name: Download homepage build artifact
-        uses: actions/download-artifact@v2  # Correct version for Windows
-        with:
-          name: homepage-build
-
-      - name: Download login/registration build artifact
-        uses: actions/download-artifact@v2  # Correct version for Windows
-        with:
-          name: login-registration-build
-
-      - name: Install diffoscope
-        run: |
-          choco install diffoscope  # Use Chocolatey to install Diffoscope on Windows
-
-      - name: Compare the two builds
-        run: |
-          diffoscope homepage-build\ login-registration-build\ > diff_output.txt
-          type diff_output.txt  # Show the diff output in the logs
-
-      - name: Upload diff result
-        uses: actions/upload-artifact@v2  # Correct version for Windows
-        with:
-          name: diff-output
-          path: diff_output.txt  # Upload the diff result as an artifact if needed
-
-
+- name: Upload Build Artifacts
+  uses: actions/upload-artifact@v3
+  with:
+    name: build-artifacts
+    path: build/  # Ensure this points to the correct directory
 
 
