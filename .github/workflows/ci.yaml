@@ -34,3 +34,42 @@ jobs:
         with:
           name: react-build
           path: ./build  # Adjust this path if your build output is somewhere else
+
+test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+
+      - name: Install Python Dependencies
+        run: pip install requests pytest flake8
+
+      - name: Run API Tests
+        run: pytest tests/test_auth.py  
+
+      - name: Run Python Code Quality Checks
+        run: flake8 tests/test_auth.py  
+
+backend-quality:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Backend Dependencies
+        run: npm install  
+
+      - name: Run ESLint for Code Quality
+        run: npx eslint server/**/*.js            
