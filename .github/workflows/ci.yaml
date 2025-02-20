@@ -35,7 +35,7 @@ jobs:
           name: react-build
           path: ./build  # Adjust this path if your build output is somewhere else
 
-test:
+  test:
     runs-on: windows-latest
 
     steps:
@@ -56,7 +56,7 @@ test:
       - name: Run Python Code Quality Checks
         run: flake8 tests/test_auth.py  
 
-backend-quality:
+  backend-quality:
     runs-on: windows-latest
 
     steps:
