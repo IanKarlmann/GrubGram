@@ -4,27 +4,69 @@ on:
   push:
     branches:
       - homepage
+      - login/registration
   pull_request:
     branches:
       - homepage
+      - login/registration
 
 jobs:
-  build:
-    runs-on: windows-latest  # or any other OS
+  compare_builds:
+    runs-on: windows-latest  # Use Windows as the runner
 
     steps:
-      - name: Checkout repository
+      - name: Checkout homepage branch
         uses: actions/checkout@v2
-
+        with:
+          ref: homepage  # Checkout homepage branch
+          
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.17.0'  # Ensure you're using the right Node version
+          node-version: '20.17.0'
 
-      - name: Install dependencies
+      - name: Install dependencies (homepage)
         run: npm install
 
-      - name: Build React app
-        run: npm run build  # This should generate the build/ directory
+      - name: Build React app (homepage)
+        run: npm run build
+        name: Build homepage app
+
+      - name: Store homepage build directory
+        run: |
+          mkdir $GITHUB_WORKSPACE/homepage-build
+          move .\build\* $GITHUB_WORKSPACE/homepage-build\  # Move build output to a separate folder
+
+      - name: Checkout login/registration branch
+        uses: actions/checkout@v2
+        with:
+          ref: login/registration  # Checkout login/registration branch
+
+      - name: Install dependencies (login/registration)
+        run: npm install
+
+      - name: Build React app (login/registration)
+        run: npm run build
+        name: Build login/registration app
+
+      - name: Store login/registration build directory
+        run: |
+          mkdir $GITHUB_WORKSPACE/login-registration-build
+          move .\build\* $GITHUB_WORKSPACE/login-registration-build\  # Move build output to a separate folder
+
+      - name: Install diffoscope
+        run: |
+          choco install diffoscope  # Install diffoscope via Chocolatey on Windows
+
+      - name: Compare the two builds
+        run: |
+          diffoscope $GITHUB_WORKSPACE/homepage-build\ $GITHUB_WORKSPACE/login-registration-build\ > diff_output.txt
+          type diff_output.txt  # Output the result in the logs
+
+      - name: Upload diff result (if needed)
+        uses: actions/upload-artifact@v2
+        with:
+          name: diff-output
+          path: diff_output.txt  # Upload the diff result as an artifact (optional)
 
 
