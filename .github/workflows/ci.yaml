@@ -30,7 +30,6 @@ jobs:
 
       - name: Build React app (homepage)
         run: npm run build
-        name: Build homepage app
 
       - name: Store homepage build directory
         run: |
@@ -47,7 +46,6 @@ jobs:
 
       - name: Build React app (login/registration)
         run: npm run build
-        name: Build login/registration app
 
       - name: Store login/registration build directory
         run: |
@@ -68,5 +66,3 @@ jobs:
         with:
           name: diff-output
           path: diff_output.txt  # Upload the diff result as an artifact (optional)
-
-
