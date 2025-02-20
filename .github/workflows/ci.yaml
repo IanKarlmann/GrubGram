@@ -27,4 +27,10 @@ jobs:
       - name: Build React app
         run: npm run build  # This should generate the build/ directory
 
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-build
+          path: ./build  # Adjust this path if your build output is somewhere else
+
 
