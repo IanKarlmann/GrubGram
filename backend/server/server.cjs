@@ -1,10 +1,12 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const connectDB = require("./connect.cjs");
+const connectDB = require("./config/db.js");
 const authRoutes = require("./routes/authRoutes.cjs");
 
-dotenv.config();
+//dotenv.config();
+dotenv.config({ path: './config/.env' });
+// I have my .env file inside the /config folder
 connectDB();
 
 const app = express();
@@ -22,6 +24,8 @@ app.use((req, res, next) => {
 
 // Routes
 app.use("/api/auth", authRoutes);
+
+app.use('/api/posts', postRoutes);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
