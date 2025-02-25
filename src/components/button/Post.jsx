@@ -1,15 +1,13 @@
-import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import { createTheme } from '@mui/material/styles';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import PersonIcon from '@mui/icons-material/Person';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import DescriptionIcon from '@mui/icons-material/Description';
-import { AppProvider } from '@toolpad/core/AppProvider';
-import { DashboardLayout } from '@toolpad/core/DashboardLayout';
-import { useDemoRouter } from '@toolpad/core/internal';
+import { Button } from '@mui/material';
 
-
+function Post() {
+    return (
+      <Button variant="contained" color="primary" onClick={() => alert('Button Clicked')}>
+        Post
+      </Button>
+    );
+}
+  
+export default Post;
 
 

@@ -14,7 +14,7 @@ const PostsSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    imageurl: {
+    imageUrl: {
         type: String,
     },
     comments: [{
@@ -32,7 +32,7 @@ const PostsSchema = new mongoose.Schema({
     },
 });
 
-const Posts = mongoose.model('posts', PostsSchema);
+const Post = mongoose.model('posts', PostsSchema);
 Posts.createIndexes();
 
-module.exports = Posts;
+module.exports = Post;
