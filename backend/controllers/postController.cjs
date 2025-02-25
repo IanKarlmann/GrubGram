@@ -6,7 +6,9 @@ const jwt = require("jsonwebtoken");
 // findbyId: mongoDB function to find user by ID
 // findbyIdAndUpdate / findbyIdAndDelete also mongoDB functions that do similiar things
 
-// countDocuments:
+// countDocuments: counts the number of documents in the collection
+
+
 
 // Create a new post
 const createPost = async (req, res) => {
@@ -50,7 +52,8 @@ const createPost = async (req, res) => {
     const savedPost = await newPost.save();
     
     res.status(201).json(savedPost);
-  } catch (error) {
+  } 
+  catch (error) {
     if (error.name === "JsonWebTokenError") {
       return res.status(401).json({ message: "Invalid token" });
     }
@@ -82,7 +85,8 @@ const getAllPosts = async (req, res) => {
       currentPage: page,
       totalPosts: total
     });
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("Get all posts error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -97,7 +101,8 @@ const getUserPosts = async (req, res) => {
       .sort({ date: -1 });
     
     res.status(200).json(posts);
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("Get user posts error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -113,7 +118,8 @@ const getPostById = async (req, res) => {
     }
     
     res.status(200).json(post);
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("Get post by ID error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -156,7 +162,8 @@ const updatePost = async (req, res) => {
     );
     
     res.status(200).json(updatedPost);
-  } catch (error) {
+  } 
+  catch (error) {
     if (error.name === "JsonWebTokenError") {
       return res.status(401).json({ message: "Invalid token" });
     }
@@ -244,7 +251,8 @@ const addComment = async (req, res) => {
     await post.save();
     
     res.status(201).json(post.comments);
-  } catch (error) {
+  } 
+  catch (error) {
     if (error.name === "JsonWebTokenError") {
       return res.status(401).json({ message: "Invalid token" });
     }
@@ -300,7 +308,8 @@ const deleteComment = async (req, res) => {
     await post.save();
     
     res.status(200).json(post.comments);
-  } catch (error) {
+  } 
+  catch (error) {
     if (error.name === "JsonWebTokenError") {
       return res.status(401).json({ message: "Invalid token" });
     }
