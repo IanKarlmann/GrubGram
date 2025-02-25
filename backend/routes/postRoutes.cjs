@@ -19,7 +19,7 @@ router.get('/:id', getPostById);
 router.put('/:id', updatePost);
 router.delete('/:id', deletePost);
 
-// Comment routes
+// Comment routes /
 router.post('/:id/comments', addComment);
 router.delete('/:postId/comments/:commentId', deleteComment);
 
