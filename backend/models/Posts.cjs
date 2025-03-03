@@ -41,6 +41,5 @@ const PostsSchema = new mongoose.Schema({
 });
 
 const Post = mongoose.model('posts', PostsSchema, 'posts');
-Posts.createIndexes();
 
 module.exports = Post;

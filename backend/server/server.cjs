@@ -1,11 +1,12 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const connectDB = require("./config/db.js");
-const authRoutes = require("./routes/authRoutes.cjs");
+const connectDB = require("../config/db.js");
+const authRoutes = require("../routes/authRoutes.cjs");
+const postRoutes = require("../routes/PostRoutes.cjs");
 
 //dotenv.config();
-dotenv.config({ path: './config/.env' });
+dotenv.config({ path: '../config/.env' });
 // I have my .env file inside the /config folder
 connectDB();
 

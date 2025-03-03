@@ -1,5 +1,5 @@
 const User = require("../models/User.cjs");
-const Post = require("../models/Post.cjs");
+const Post = require("../models/Posts.cjs");
 const jwt = require("jsonwebtoken");
 
 // functions:
