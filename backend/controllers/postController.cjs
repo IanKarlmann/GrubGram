@@ -1,6 +1,7 @@
 const User = require("../models/User.cjs");
 const Post = require("../models/Posts.cjs");
 const jwt = require("jsonwebtoken");
+const mongoose = require('mongoose');
 
 // functions:
 // findbyId: mongoDB function to find user by ID
@@ -14,20 +15,25 @@ const jwt = require("jsonwebtoken");
 const createPost = async (req, res) => {
   try {
     // Get auth token from request headers
-    const token = req.headers.authorization?.split(" ")[1];
+    // const token = req.headers.authorization?.split(" ")[1];
     
-    if (!token) {
-      return res.status(401).json({ message: "No token provided, authorization denied" });
-    }
+    // if (!token) {
+    //   return res.status(401).json({ message: "No token provided, authorization denied" });
+    // }
     
-    // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // // Verify token
+    // const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
-    // Get user from token (assuming your token has userId stored)
-    const user = await User.findById(decoded.userId || decoded.id);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+    // // Get user from token (assuming your token has userId stored)
+    // const user = await User.findById(decoded.userId || decoded.id);
+    // if (!user) {
+    //   return res.status(404).json({ message: "User not found" });
+    // }
+
+    const user = {
+      _id: new mongoose.Types.ObjectId(),
+      name: "Test User"
+    };
     
     // Get post data from request body
     const { title, description, imageUrl } = req.body;
@@ -36,6 +42,8 @@ const createPost = async (req, res) => {
     if (!title || !description) {
       return res.status(400).json({ message: "Title and description are required" });
     }
+
+    console.log("User ID: ", user._id);
     
     // Create new post
     const newPost = new Post({
@@ -54,9 +62,6 @@ const createPost = async (req, res) => {
     res.status(201).json(savedPost);
   } 
   catch (error) {
-    if (error.name === "JsonWebTokenError") {
-      return res.status(401).json({ message: "Invalid token" });
-    }
     console.error("Create post error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
