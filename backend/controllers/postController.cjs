@@ -15,25 +15,26 @@ const mongoose = require('mongoose');
 const createPost = async (req, res) => {
   try {
     // Get auth token from request headers
-    // const token = req.headers.authorization?.split(" ")[1];
+    const token = req.headers.authorization?.split(" ")[1];
     
-    // if (!token) {
-    //   return res.status(401).json({ message: "No token provided, authorization denied" });
-    // }
+    if (!token) {
+      return res.status(401).json({ message: "No token provided, authorization denied" });
+    }
     
-    // // Verify token
-    // const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
-    // // Get user from token (assuming your token has userId stored)
-    // const user = await User.findById(decoded.userId || decoded.id);
-    // if (!user) {
-    //   return res.status(404).json({ message: "User not found" });
-    // }
+    // Get user from token (assuming your token has userId stored)
+    const user = await User.findById(decoded.userId || decoded.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-    const user = {
-      _id: new mongoose.Types.ObjectId(),
-      name: "Test User"
-    };
+    //test
+    // const user = {
+    //   _id: new mongoose.Types.ObjectId(),
+    //   name: "Test User"
+    // };
     
     // Get post data from request body
     const { title, description, imageUrl } = req.body;
@@ -42,12 +43,10 @@ const createPost = async (req, res) => {
     if (!title || !description) {
       return res.status(400).json({ message: "Title and description are required" });
     }
-
-    console.log("User ID: ", user._id);
     
     // Create new post
     const newPost = new Post({
-      username: user.name, // Using name field instead of username
+      username: user.fullName, // Using name field instead of username
       userId: user._id,
       title,
       description,
@@ -133,35 +132,39 @@ const getPostById = async (req, res) => {
 // Update post
 const updatePost = async (req, res) => {
   try {
-    const { title, description, imageUrl } = req.body;
-    const token = req.headers.authorization?.split(" ")[1];
+    // const token = req.headers.authorization?.split(" ")[1];
     
-    if (!token) {
-      return res.status(401).json({ message: "No token provided, authorization denied" });
-    }
+    // if (!token) {
+    //   return res.status(401).json({ message: "No token provided, authorization denied" });
+    // }
     
-    // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // // Verify token
+    // const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const userId = "67c635f027066576e3fe9fdf";
     
     // Find post
     const post = await Post.findById(req.params.id);
-    
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
     
     // Check if user owns the post (using userId from token)
-    if (post.userId.toString() !== (decoded.userId || decoded.id)) {
+    // if (post.userId.toString() !== (decoded.userId || decoded.id)) {
+    //   return res.status(403).json({ message: "Not authorized to update this post" });
+    // }
+
+    if (post.userId.toString() !== userId) {
       return res.status(403).json({ message: "Not authorized to update this post" });
     }
     
-    // Update post - match field names with your model
+    const { title, description, imageUrl } = req.body;
     const updatedPost = await Post.findByIdAndUpdate(
       req.params.id,
       { 
         title: title || post.title,
         description: description || post.description,
-        imageUrl: imageUrl || post.imageUrl // Ensure this matches your model field
+        imageUrl: imageUrl || post.imageUrl 
       },
       { new: true }
     );
@@ -169,9 +172,6 @@ const updatePost = async (req, res) => {
     res.status(200).json(updatedPost);
   } 
   catch (error) {
-    if (error.name === "JsonWebTokenError") {
-      return res.status(401).json({ message: "Invalid token" });
-    }
     console.error("Update post error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -244,7 +244,7 @@ const addComment = async (req, res) => {
     // Create comment - match field names with your schema
     const newComment = {
       userId: user._id,
-      username: user.name, // Using name instead of username
+      username: user.fullName, // Using name instead of username
       content: text, // Using content instead of text to match your schema
       createdAt: new Date() // Using createdAt instead of date to match your schema
     };
@@ -258,10 +258,7 @@ const addComment = async (req, res) => {
     res.status(201).json(post.comments);
   } 
   catch (error) {
-    if (error.name === "JsonWebTokenError") {
-      return res.status(401).json({ message: "Invalid token" });
-    }
-    console.error("Add comment error:", error);
+    console.error("Create post error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };

@@ -2,25 +2,33 @@ const User = require("../models/User.cjs");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// Register User
+// Register User (Step 1)
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    console.log("Received Registration Data:", req.body);
 
-    // Check if user already exists
+    const { fullName, email, password } = req.body;
+
+    if (!fullName || !email || !password) {
+      return res.status(400).json({ message: "All required fields must be filled." });
+    }
+
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ message: "User already exists" });
 
-    // Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create new user
-    user = new User({ name, email, password: hashedPassword });
-    await user.save();
+    user = new User({
+      fullName,
+      email,
+      password: hashedPassword
+    });
 
-    res.status(201).json({ message: "User registered successfully" });
+    await user.save();
+    res.status(201).json({ message: "User registered successfully", userId: user._id });
   } catch (error) {
+    console.error("Registration error:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -29,22 +37,64 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log("Login attempt:", email, password);
 
     // Find user by email
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "Invalid credentials" });
+    console.log("User found:", user);
+
+    if (!user) {
+      console.log("Error: User not found");
+      return res.status(400).json({ message: "Invalid credentials - user not found" });
+    }
 
     // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    console.log("Password match:", isMatch);
+
+    if (!isMatch) {
+      console.log("Error: Incorrect password");
+      return res.status(400).json({ message: "Invalid credentials - incorrect password" });
+    }
 
     // Generate JWT
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    console.log("Generated Token:", token);
 
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
+    res.json({ token, user: { id: user._id, fullName: user.fullName, email: user.email } });
   } catch (error) {
+    console.error("Login error:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-module.exports = { registerUser, loginUser };
+// Setup User Profile (Step 2)
+const setupUserProfile = async (req, res) => {
+  try {
+    const { userId, age, height, weight, activityLevel, goals, targetCalories, dietaryPreferences, allergies } = req.body;
+
+    // Find user by ID
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // Update user profile fields
+    user.age = age;
+    user.height = height;
+    user.weight = weight;
+    user.activityLevel = activityLevel;
+    user.goals = goals;
+    user.targetCalories = targetCalories;
+    user.dietaryPreferences = dietaryPreferences;
+    user.allergies = allergies;
+
+    await user.save();
+    res.status(200).json({ message: "Profile updated successfully!" });
+
+  } catch (error) {
+    console.error("Profile Setup Error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Ensure all functions are properly exported
+module.exports = { registerUser, loginUser, setupUserProfile };
