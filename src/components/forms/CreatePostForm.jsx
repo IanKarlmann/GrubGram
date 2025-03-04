@@ -11,7 +11,7 @@ function CreatePostForm({ onCreatePost, onCancel }) {
     const newPost = {
       title,
       description,
-      imageUrl: imageUrl || null, // Handle empty image URL
+      imageUrl: imageUrl.trim() ? imageUrl: "", // Handle empty image URL
     };
     onCreatePost(newPost);
     

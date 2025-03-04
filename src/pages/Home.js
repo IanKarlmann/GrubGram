@@ -37,22 +37,32 @@ export default function Home() {
     };
 
     const handleCreatePost = async (newPost) => {
+        const token = localStorage.getItem("token");
+  
+        console.log("Full Authorization Header:", {
+            original: `Bearer ${token}`,
+            tokenLength: token ? token.length : 'No Token'
+        });
+
         try {
-            // Get token from localStorage if user is authenticated
-            const token = localStorage.getItem("token");
-            
             const response = await axios.post(API_BASE_URL, newPost, {
-                headers: {
-                    Authorization: token ? `Bearer ${token}` : '',
-                    'Content-Type': 'application/json'
-                },
-            });
+            headers: {
+                Authorization: `Bearer ${token}`, // Explicitly construct Bearer token
+                'Content-Type': 'application/json'
+            },
+        });
     
-            console.log("Post created successfully:", response.data);
-            setPosts((prevPosts) => [response.data, ...prevPosts]); 
-            setShowForm(false);
+        console.log("Post created successfully:", response.data);
+        setPosts((prevPosts) => [response.data, ...prevPosts]); 
+        setShowForm(false);
         } catch (error) {
             console.error("Error creating post:", error);
+
+            if (error.response) {
+                console.error("Error Response Data:", error.response.data);
+                console.error("Status Code:", error.response.status);
+            }
+
             alert("Failed to create post. Please try again.");
         }
     };

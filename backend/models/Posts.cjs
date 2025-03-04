@@ -20,6 +20,7 @@ const PostsSchema = new mongoose.Schema({
     },
     imageUrl: {
         type: String,
+        required: false,
     },
     comments: [{
         userId: {
