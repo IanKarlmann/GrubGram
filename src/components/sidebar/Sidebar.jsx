@@ -102,7 +102,7 @@ function DashboardLayoutBasic(props) {
         navigation={NAVIGATION}
         branding={{
             logo: <img 
-                    src={process.env.PUBLIC_URL + '/grub_logo.jpg'} 
+                    src={process.env.PUBLIC_URL + 'logo.jpg'} 
                     alt="Logo"
                     style={{width: '50px', height: 'auto'}}
             />,

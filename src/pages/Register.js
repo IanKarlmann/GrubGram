@@ -20,21 +20,25 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
+  
     try {
       const res = await axios.post("http://localhost:5001/api/auth/register", formData);
-
-      if (res.data.userId) {
-        // Store userId in localStorage
-        localStorage.setItem("userId", res.data.userId);
-
-        // Redirect to setup-profile page
-        navigate("/setup-profile");
+  
+      console.log("Registration Response:", res.data); 
+  
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token); // Store token in localStorage
+        localStorage.setItem("userId", res.data.user.id); // tore user ID
+        console.log("Token Stored After Registration:", localStorage.getItem("token")); 
       } else {
-        setError("Registration successful, but userId is missing.");
+        console.error("No token received after registration.");
       }
+  
+      navigate("/setup-profile");
+  
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed. Please try again.");
+      console.error("Registration failed:", err.response?.data || err.message);
+      setError(err.response?.data?.message || "Registration failed.");
     }
   };
 

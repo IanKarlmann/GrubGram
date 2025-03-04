@@ -26,7 +26,21 @@ const registerUser = async (req, res) => {
     });
 
     await user.save();
-    res.status(201).json({ message: "User registered successfully", userId: user._id });
+
+    // Generate JWT after registration
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+    console.log("Token Generated After Registration:", token);
+
+    res.status(201).json({
+      message: "User registered successfully",
+      token,
+      user: { id: user._id, fullName: user.fullName, email: user.email }
+    });
+
   } catch (error) {
     console.error("Registration error:", error);
     res.status(500).json({ message: "Server error" });
@@ -71,11 +85,20 @@ const loginUser = async (req, res) => {
 // Setup User Profile (Step 2)
 const setupUserProfile = async (req, res) => {
   try {
+    console.log("Received Profile Data:", req.body);
+
     const { userId, age, height, weight, activityLevel, goals, targetCalories, dietaryPreferences, allergies } = req.body;
 
-    // Find user by ID
+    if (!userId) {
+      console.error("UserID missing in request body.");
+      return res.status(400).json({ message: "UserID is required" });
+    }
+
     const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user) {
+      console.error("User not found for ID:", userId);
+      return res.status(404).json({ message: "User not found" });
+    }
 
     // Update user profile fields
     user.age = age;
@@ -95,6 +118,49 @@ const setupUserProfile = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+const getUserProfile = async (req, res) => {
+  try {
+    const userId = req.user.id; // Extract from authenticated request
+    const user = await User.findById(userId).select("-password"); // Exclude password
 
-// Ensure all functions are properly exported
-module.exports = { registerUser, loginUser, setupUserProfile };
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+const updateUserProfile = async (req, res) => {
+  try {
+    const userId = req.user.id; // Extract user ID from the authenticated request
+    const { fullName, age, gender, height, weight, activityLevel, goals, dietaryPreferences } = req.body;
+
+    let user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update only the fields provided
+    user.fullName = fullName || user.fullName;
+    user.age = age || user.age;
+    user.gender = gender || user.gender;
+    user.height = height || user.height;
+    user.weight = weight || user.weight;
+    user.activityLevel = activityLevel || user.activityLevel;
+    user.goals = goals || user.goals;
+    user.dietaryPreferences = dietaryPreferences || user.dietaryPreferences;
+
+    await user.save();
+    res.json({ message: "Profile updated successfully!", user });
+
+  } catch (error) {
+    console.error("Error updating user profile:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// ensure it's exported
+module.exports = { registerUser, loginUser, setupUserProfile, getUserProfile, updateUserProfile };

@@ -42,17 +42,36 @@ export default function SetupProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
+  
     try {
-      await axios.post("http://localhost:5001/api/auth/setup-profile", { userId, ...formData });
-
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId"); 
+  
+      if (!token || !userId) {
+          console.error("Missing token or userId.");
+          setError("Authentication error. Please log in again.");
+          return;
+      }
+  
+      console.log("Token being sent:", token);
+      console.log("UserID being sent:", userId); 
+  
+      const res = await axios.post(
+        "http://localhost:5001/api/auth/setup-profile",
+        { userId, ...formData },  
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+  
+      console.log("Profile setup success:", res.data);
       alert("Profile setup complete!");
-      navigate("/dashboard"); // Redirect to main dashboard
-
+      navigate("/dashboard");
+  
     } catch (err) {
-      setError(err.response?.data?.message || "Profile setup failed. Please try again.");
+      console.error("Profile setup failed:", err.response?.data || err.message);
+      setError(err.response?.data?.message || "Profile setup failed.");
     }
   };
+
 
   return (
     <div className="auth-container">
