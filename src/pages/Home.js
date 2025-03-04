@@ -1,13 +1,36 @@
-import React, { useState } from "react";
-import Topbar from "../components/topbar/Topbar";
-import Sidebar from "../components/sidebar/Sidebar";
-import CreatePostForm from "../components/forms/CreatePostForm";
-import Feed from "../components/feed/Feed";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./home.css"; // Add styles for centering
+import Topbar from "../components/topbar/Topbar";
+import DashboardLayoutBasic from "../components/sidebar/Sidebar"; 
+import Feed from "../components/feed/Feed";
+import CreatePostForm from "../components/forms/CreatePostForm";
+import "./home.css"; // Import the alternative CSS
+
+const API_BASE_URL = "http://localhost:5001/api/posts"; // backend URL
 
 export default function Home() {
+    const [posts, setPosts] = useState([]);  
     const [showForm, setShowForm] = useState(false);
+
+    useEffect(() => {
+        fetchPosts(); // load posts on mount
+    }, []);
+
+    const fetchPosts = async () => {
+        try {
+            const response = await axios.get(API_BASE_URL);
+            console.log("Fetched posts:", response.data);
+            
+            // Handle different API response structures
+            const postsData = Array.isArray(response.data) 
+                ? response.data 
+                : (response.data.posts || []);
+                
+            setPosts(postsData);
+        } catch (error) {
+            console.error("Error fetching posts:", error);
+        }
+    };
 
     const toggleForm = () => {
         setShowForm(!showForm);
@@ -15,33 +38,47 @@ export default function Home() {
 
     const handleCreatePost = async (newPost) => {
         try {
-            const response = await axios.post("/api/posts", newPost, {
-                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            // Get token from localStorage if user is authenticated
+            const token = localStorage.getItem("token");
+            
+            const response = await axios.post(API_BASE_URL, newPost, {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : '',
+                    'Content-Type': 'application/json'
+                },
             });
-            console.log("Post created:", response.data);
+    
+            console.log("Post created successfully:", response.data);
+            setPosts((prevPosts) => [response.data, ...prevPosts]); 
+            setShowForm(false);
         } catch (error) {
             console.error("Error creating post:", error);
+            alert("Failed to create post. Please try again.");
         }
+    };
+
+    const handleCancelPost = () => {
+        setShowForm(false);
     };
 
     return (
         <>
             <Topbar toggleForm={toggleForm} />
-            <Sidebar />
-            <div className="home">
-                <Feed />
-
-                {/* Show Form Centered on Screen */}
-                {showForm && (
-                    <div className="overlay" onClick={toggleForm}>
-                        <div className="formContainer" onClick={(e) => e.stopPropagation()}>
-                            <CreatePostForm onCreatePost={handleCreatePost} />
-                            <button className="closeButton" onClick={toggleForm}>✖</button>
-                        </div>
-                    </div>
-                )}
+            <div className="home-container">
+                {/* Keep the original dashboard layout */}
+                <DashboardLayoutBasic />
+                
+                {/* Add our feed overlay that sits on top */}
+                <div className="feed-overlay">
+                    {showForm && (
+                        <CreatePostForm 
+                            onCreatePost={handleCreatePost} 
+                            onCancel={handleCancelPost} 
+                        />
+                    )}
+                    <Feed posts={posts} />
+                </div>
             </div>
         </>
     );
 }
-

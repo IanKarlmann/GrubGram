@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './CreatePostForm.css';
 
-function CreatePostForm({ onCreatePost }) {
+function CreatePostForm({ onCreatePost, onCancel }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [imageUrl, setImageUrl] = useState('');
@@ -11,9 +11,11 @@ function CreatePostForm({ onCreatePost }) {
     const newPost = {
       title,
       description,
-      imageUrl,
+      imageUrl: imageUrl || null, // Handle empty image URL
     };
-    onCreatePost(newPost); // This function will send the data to the backend or state
+    onCreatePost(newPost);
+    
+    // Reset form
     setTitle('');
     setDescription('');
     setImageUrl('');
@@ -43,6 +45,7 @@ function CreatePostForm({ onCreatePost }) {
             onChange={(e) => setDescription(e.target.value)}
             required
             placeholder="Enter the description of your post"
+            rows="4"
           />
         </div>
 
@@ -57,9 +60,16 @@ function CreatePostForm({ onCreatePost }) {
           />
         </div>
 
-        <button type="submit" className="submit-btn">
-          Create Post
-        </button>
+        <div className="form-actions">
+          <button type="submit" className="submit-btn">
+            Create Post
+          </button>
+          {onCancel && (
+            <button type="button" className="cancel-btn" onClick={onCancel}>
+              Cancel
+            </button>
+          )}
+        </div>
       </form>
     </div>
   );
