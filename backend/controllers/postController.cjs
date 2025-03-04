@@ -3,13 +3,6 @@ const Post = require("../models/Posts.cjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require('mongoose');
 
-// functions:
-// findbyId: mongoDB function to find user by ID
-// findbyIdAndUpdate / findbyIdAndDelete also mongoDB functions that do similiar things
-
-// countDocuments: counts the number of documents in the collection
-
-
 
 // Create a new post
 const createPost = async (req, res) => {
@@ -46,7 +39,7 @@ const createPost = async (req, res) => {
     
     // Create new post
     const newPost = new Post({
-      username: user.fullName, // Using name field instead of username
+      username: user.fullName, // Using fullName
       userId: user._id,
       title,
       description,
@@ -207,10 +200,7 @@ const deletePost = async (req, res) => {
     res.status(200).json({ message: "Post deleted successfully" });
   } 
   catch (error) {
-    if (error.name === "JsonWebTokenError") {
-      return res.status(401).json({ message: "Invalid token" });
-    }
-    console.error("Delete post error:", error);
+    console.error("Create post error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
@@ -312,10 +302,7 @@ const deleteComment = async (req, res) => {
     res.status(200).json(post.comments);
   } 
   catch (error) {
-    if (error.name === "JsonWebTokenError") {
-      return res.status(401).json({ message: "Invalid token" });
-    }
-    console.error("Delete comment error:", error);
+    console.error("Create post error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
