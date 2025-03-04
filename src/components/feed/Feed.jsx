@@ -1,5 +1,5 @@
 import React from 'react';
-import './Feed.css'; // Make sure to create this CSS file
+import './Feed.css'; 
 
 const Feed = ({ posts }) => {
     // If posts are passed as props, use them
@@ -8,7 +8,7 @@ const Feed = ({ posts }) => {
 
     return (
         <div className="feed">
-            <h2>Feed</h2>
+            <h2>User Feed</h2>
             <div className="feed-posts">
                 {displayPosts.length === 0 ? (
                     <p>No posts available</p>
