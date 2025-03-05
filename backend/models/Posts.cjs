@@ -4,7 +4,11 @@ const PostsSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        unique: true,
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
+        required: true
     },
     title: {
         type: String,
@@ -14,11 +18,16 @@ const PostsSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    imageurl: {
+    imageUrl: {
         type: String,
+        required: false,
     },
     comments: [{
-        userId: String,
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
         username: String,
         content: String,
         createdAt: {
@@ -32,7 +41,6 @@ const PostsSchema = new mongoose.Schema({
     },
 });
 
-const Posts = mongoose.model('posts', PostsSchema);
-Posts.createIndexes();
+const Post = mongoose.model('posts', PostsSchema, 'posts');
 
-module.exports = Posts;
+module.exports = Post;

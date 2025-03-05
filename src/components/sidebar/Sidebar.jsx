@@ -51,21 +51,21 @@ const NAVIGATION = [
   }
 ];
 
-const demoTheme = createTheme({
-  cssVariables: {
-    colorSchemeSelector: 'data-toolpad-color-scheme',
-  },
-  colorSchemes: { light: true, dark: false },
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 600,
-      lg: 1200,
-      xl: 1536,
-    },
-  },
-});
+// const demoTheme = createTheme({
+//   cssVariables: {
+//     colorSchemeSelector: 'data-toolpad-color-scheme',
+//   },
+//   colorSchemes: { light: true, dark: false },
+//   breakpoints: {
+//     values: {
+//       xs: 0,
+//       sm: 600,
+//       md: 600,
+//       lg: 1200,
+//       xl: 1536,
+//     },
+//   },
+// });
 
 // demo page
 function DemoPageContent({ pathname }) {
@@ -89,36 +89,65 @@ DemoPageContent.propTypes = {
 };
 
 function DashboardLayoutBasic(props) {
-    const { window } = props;
-  
-    const router = useDemoRouter('/dashboard');
-  
-    // Remove this const when copying and pasting into your project.
-    const demoWindow = window !== undefined ? window() : undefined;
-  
-    return (
-      // preview-start
+  const { window } = props;
+  const router = useDemoRouter('/dashboard');
+  const demoWindow = window !== undefined ? window() : undefined;
+
+  return (
+    <Box 
+      sx={{
+        width: 250,
+        position: 'sticky',
+        left: 0,
+        top: '0px', // Matches topbar height
+        bottom: 0, // Extend to bottom of viewport
+        zIndex: 1000,
+        overflow: 'hidden', // Prevent internal scrolling
+      }}
+    >
       <AppProvider
         navigation={NAVIGATION}
         branding={{
-            logo: <img 
-                    src={process.env.PUBLIC_URL + '/grub_logo.jpg'} 
-                    alt="Logo"
-                    style={{width: '50px', height: 'auto'}}
-            />,
-            title: '',
-            homeUrl: '/home',
+          logo: <img 
+            src={process.env.PUBLIC_URL + '/grub_logo.jpg'} 
+            alt="Logo"
+            style={{
+              width: '50px', 
+              height: 'auto',
+              margin: '10px 0 20px 0', // Add some vertical spacing
+              alignSelf: 'center',
+              display: 'block'
+            }}
+          />,
+          title: '',
+          homeUrl: '/home',
         }}
         router={router}
-        theme={demoTheme}
+        theme={createTheme({
+          cssVariables: { colorSchemeSelector: 'data-toolpad-color-scheme' },
+          colorSchemes: { light: true, dark: false },
+        })}
         window={demoWindow}
       >
-        <DashboardLayout>
-          <DemoPageContent pathname={router.pathname} />
+        <DashboardLayout 
+          sx={{
+            '& .MuiToolpad-dashboardLayoutHeader': {
+              position: 'static', // Prevent fixed positioning
+              top: 0,
+              marginTop: 0,
+              paddingTop: 0
+            },
+            '& .MuiToolpad-dashboardLayoutNavigation': {
+              paddingTop: '20px', // Add padding to navigation items
+              gap: '10px' // Add some spacing between navigation items
+            }
+          }}
+        >
+          {/* Your existing navigation content */}
         </DashboardLayout>
       </AppProvider>
-      // preview-end
-    );
-  }
+    </Box>
+  );
+}
 
 export default DashboardLayoutBasic;

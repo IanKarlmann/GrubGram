@@ -1,0 +1,34 @@
+.home-container {
+  display: flex;
+  position: relative;
+  margin-top: 50px; /* Exact topbar height */
+  background-color: #f0f2f5;
+  min-height: calc(100vh - 50px);
+  overflow-x: hidden; /* Prevent overall horizontal scrolling */
+}
+
+.feed-overlay {
+  flex-grow: 1;
+  margin-left: 250px; /* Match sidebar width */
+  padding: 20px;
+  width: calc(100% - 250px); /* Ensure full width minus sidebar */
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .feed-overlay {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+  }
+}
+
+.feed {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Prevent any unexpected horizontal scrolling */
+body, html {
+  overflow-x: hidden;
+  max-width: 100%;
+}

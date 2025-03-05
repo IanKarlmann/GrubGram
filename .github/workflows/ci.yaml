@@ -1,0 +1,38 @@
+name: React CI
+
+on:
+  push:
+    branches:
+      - homepage
+      - login/registration
+      - main
+  pull_request:
+    branches:
+      - homepage
+
+jobs:
+  build:
+    runs-on: windows-latest  # or any other OS
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.17.0'  # Ensure you're using the right Node version
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build React app
+        run: npm run build  # This should generate the build/ directory
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-build
+          path: ./build  # Adjust this path if your build output is somewhere else
+
+
