@@ -4,6 +4,8 @@ const cors = require("cors");
 const connectDB = require("../config/db.js");
 const authRoutes = require("../routes/authRoutes.cjs");
 const postRoutes = require("../routes/PostRoutes.cjs");
+const http = require("http"); // Import http to work with socket.io
+const socketIo = require("socket.io");
 
 //dotenv.config();
 dotenv.config({ path: '../config/.env' });
@@ -11,6 +13,10 @@ dotenv.config({ path: '../config/.env' });
 connectDB();
 
 const app = express();
+
+const server = http.createServer(app);
+
+const io = socketIo(server);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -27,6 +33,15 @@ app.use((req, res, next) => {
 app.use("/api/auth", authRoutes);
 
 app.use('/api/posts', postRoutes);
+
+io.on('connection', (socket) => {
+    console.log('New client connected');
+    
+    // Handle disconnect event
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
+    });
+});
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

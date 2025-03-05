@@ -2,7 +2,7 @@ const User = require("../models/User.cjs");
 const Post = require("../models/Posts.cjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require('mongoose');
-
+const io = require("../server/server.cjs");
 
 // Create a new post
 const createPost = async (req, res) => {
@@ -50,6 +50,8 @@ const createPost = async (req, res) => {
     
     // Save post to database
     const savedPost = await newPost.save();
+
+    io.emit('newPost', savedPost); // Emit event to all clients connected via Socket.IO
     
     res.status(201).json(savedPost);
   } 

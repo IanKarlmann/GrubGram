@@ -4,7 +4,8 @@ import Topbar from "../components/topbar/Topbar";
 import DashboardLayoutBasic from "../components/sidebar/Sidebar"; 
 import Feed from "../components/feed/Feed";
 import CreatePostForm from "../components/forms/CreatePostForm";
-import "./home.css"; // Import the alternative CSS
+import "./home.css";
+import io from "socket.io-client";
 
 const API_BASE_URL = "http://localhost:5001/api/posts"; // backend URL
 
@@ -14,6 +15,17 @@ export default function Home() {
 
     useEffect(() => {
         fetchPosts(); // load posts on mount
+
+        const socket = io("http://localhost:5001");
+
+        socket.on("newPost", (post) =>{
+            setPosts((prevPosts) => [post, ...prevPosts]);
+        });
+
+        return () => {
+            socket.disconnect();
+        };
+
     }, []);
 
     const fetchPosts = async () => {
@@ -22,9 +34,7 @@ export default function Home() {
             console.log("Fetched posts:", response.data);
             
             // Handle different API response structures
-            const postsData = Array.isArray(response.data) 
-                ? response.data 
-                : (response.data.posts || []);
+            const postsData = Array.isArray(response.data) ? response.data : (response.data.posts || []);
                 
             setPosts(postsData);
         } catch (error) {
