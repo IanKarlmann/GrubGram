@@ -5,6 +5,7 @@ import Account from "./pages/Account";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import SetupProfile from "./pages/SetupProfile"; 
+import MealLog from "./pages/MealLog";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ function App() {
         {/* Ensure only users who have set up their profile can access protected pages */}
         <Route path="/home" element={<ProtectedRoute><ProfileSetupRoute><Home /></ProfileSetupRoute></ProtectedRoute>} />
         <Route path="/account" element={<ProtectedRoute><ProfileSetupRoute><Account /></ProfileSetupRoute></ProtectedRoute>} />
+        <Route path="/meallog" element={<ProtectedRoute><ProfileSetupRoute><MealLog /></ProfileSetupRoute></ProtectedRoute>} />
 
         {/* Redirect to home if authenticated, otherwise login */}
         <Route path="*" element={<Navigate to={isAuthenticated ? "/home" : "/login"} />} />

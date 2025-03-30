@@ -5,38 +5,33 @@ const mongoose = require('mongoose');
 const io = require("../server/server.cjs");
 
 // Create a new post
-const createPost = async (req, res) => {
+const createPost = async (req, res, io) => {
   try {
     // Get auth token from request headers
     const token = req.headers.authorization?.split(" ")[1];
-    
     if (!token) {
       return res.status(401).json({ message: "No token provided, authorization denied" });
     }
     
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
-    // Get user from token (assuming your token has userId stored)
     const user = await User.findById(decoded.userId || decoded.id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
-    //test
-    // const user = {
-    //   _id: new mongoose.Types.ObjectId(),
-    //   name: "Test User"
-    // };
     
     // Get post data from request body
-    const { title, description, imageUrl } = req.body;
-    
-    // Validate required fields
+    const { title, description} = req.body; // removed imageUrl from here
     if (!title || !description) {
       return res.status(400).json({ message: "Title and description are required" });
     }
     
+    // Handle uploaded image
+    let imageUrl = null;
+    if (req.file) {
+      imageUrl = `/uploads/${req.file.filename}`; // Save the file path
+    }
+
     // Create new post
     const newPost = new Post({
       username: user.fullName, // Using fullName
@@ -66,7 +61,7 @@ const getAllPosts = async (req, res) => {
   try {
     // Pagination
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = parseInt(req.query.limit) || 15;
     const skip = (page - 1) * limit;
     
     // Get posts sorted by date (newest first)

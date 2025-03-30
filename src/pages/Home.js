@@ -30,8 +30,11 @@ export default function Home() {
 
     const fetchPosts = async () => {
         try {
-            const response = await axios.get(API_BASE_URL);
-            console.log("Fetched posts:", response.data);
+            const response = await axios.get(API_BASE_URL, {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("token")}`, // Include token if required
+                },
+            });
             
             // Handle different API response structures
             const postsData = Array.isArray(response.data) ? response.data : (response.data.posts || []);
@@ -58,7 +61,7 @@ export default function Home() {
             const response = await axios.post(API_BASE_URL, newPost, {
             headers: {
                 Authorization: `Bearer ${token}`, // Explicitly construct Bearer token
-                'Content-Type': 'application/json'
+                'Content-Type': 'multipart/form-data', // Set content type for file upload
             },
         });
     

@@ -4,21 +4,38 @@ import './CreatePostForm.css';
 function CreatePostForm({ onCreatePost, onCancel }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageFile, setImageFile] = useState(null); // Store the uploaded file
 
-  const handleSubmit = (e) => {
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file); // Save the file to state
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newPost = {
-      title,
-      description,
-      imageUrl: imageUrl.trim() ? imageUrl: "", // Handle empty image URL
-    };
-    onCreatePost(newPost);
-    
+
+    // Create a FormData object to send the file and other data
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    if (imageFile) {
+      formData.append('image', imageFile); // Attach the file
+    }
+
+    // Debugging: Log FormData contents
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    } 
+
+    // Call the onCreatePost function with the form data
+    onCreatePost(formData);
+
     // Reset form
     setTitle('');
     setDescription('');
-    setImageUrl('');
+    setImageFile(null);
   };
 
   return (
@@ -36,7 +53,7 @@ function CreatePostForm({ onCreatePost, onCancel }) {
             placeholder="Enter the title of your post"
           />
         </div>
-        
+
         <div className="form-group">
           <label htmlFor="description">Description</label>
           <textarea
@@ -50,13 +67,13 @@ function CreatePostForm({ onCreatePost, onCancel }) {
         </div>
 
         <div className="form-group">
-          <label htmlFor="imageUrl">Image URL</label>
+          <label htmlFor="imageFile">Upload Image</label>
           <input
-            type="url"
-            id="imageUrl"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            placeholder="Enter the image URL (optional)"
+            type="file"
+            id="imageFile"
+            name="image"
+            accept="image/*"
+            onChange={handleFileChange}
           />
         </div>
 
