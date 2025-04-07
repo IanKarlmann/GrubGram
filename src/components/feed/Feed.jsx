@@ -19,7 +19,7 @@ const Feed = ({ posts }) => {
                             <p>{post.description}</p>
                             {post.username && <p><strong>Username:</strong> {post.username}</p>}
                             {post.imageUrl && (
-                                <img src={post.imageUrl} alt={post.title} />
+                                <img src={`http://localhost:5001${post.imageUrl}`} alt={post.title} />
                             )}
                             {post.comments && post.comments.length > 0 && (
                                 <p><strong>Comments:</strong> {post.comments.length}</p>

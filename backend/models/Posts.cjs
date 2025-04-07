@@ -19,13 +19,13 @@ const PostsSchema = new mongoose.Schema({
         required: true,
     },
     imageUrl: {
-        type: String,
+        type: String, // should cloudinary 
         required: false,
     },
     comments: [{
         userId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
+            ref: 'Users', // changed from user to users
             required: true
         },
         username: String,

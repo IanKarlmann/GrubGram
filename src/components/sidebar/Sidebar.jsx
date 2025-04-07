@@ -1,153 +1,141 @@
-import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import { createTheme } from '@mui/material/styles';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import PersonIcon from '@mui/icons-material/Person';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import DescriptionIcon from '@mui/icons-material/Description';
-import { AppProvider } from '@toolpad/core/AppProvider';
-import { DashboardLayout } from '@toolpad/core/DashboardLayout';
-import { useDemoRouter } from '@toolpad/core/internal';
+import React from "react";
+import PropTypes from "prop-types";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+//import { createTheme } from "@mui/material/styles";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import PersonIcon from "@mui/icons-material/Person";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import DescriptionIcon from "@mui/icons-material/Description";
+import { Link } from "react-router-dom"; // Import Link from React Router
 
 const NAVIGATION = [
   {
-    kind: 'header',
-    title: 'Main items',
+    kind: "header",
+    title: "Main items",
   },
   {
-    segment: 'home',
-    title: 'Home',
+    segment: "home",
+    title: "Home",
     icon: <DashboardIcon />,
+    path: "/home", // Add path for routing
   },
   {
-    segment: 'account',
-    title: 'Account',
+    segment: "account",
+    title: "Account",
     icon: <PersonIcon />,
+    path: "/account", // Add path for routing
   },
   {
-    kind: 'divider',
+    segment: "meallog",
+    title: "meallog",
+    path: "/meallog",
   },
   {
-    kind: 'header',
-    title: 'Analytics',
+    kind: "divider",
   },
   {
-    segment: 'tracking',
-    title: 'Tracking',
+    kind: "header",
+    title: "Analytics",
+  },
+  {
+    segment: "tracking",
+    title: "Tracking",
     icon: <BarChartIcon />,
     children: [
       {
-        segment: 'macro tracking',
-        title: 'Macro Tracking',
+        segment: "macro tracking",
+        title: "Macro Tracking",
         icon: <DescriptionIcon />,
+        path: "/tracking/macro", // Add path for routing
       },
       {
-        segment: 'calorie tracking',
-        title: 'Calorie Tracking',
+        segment: "calorie tracking",
+        title: "Calorie Tracking",
         icon: <DescriptionIcon />,
+        path: "/tracking/calorie", // Add path for routing
       },
     ],
-  }
+  },
 ];
 
-// const demoTheme = createTheme({
-//   cssVariables: {
-//     colorSchemeSelector: 'data-toolpad-color-scheme',
-//   },
-//   colorSchemes: { light: true, dark: false },
-//   breakpoints: {
-//     values: {
-//       xs: 0,
-//       sm: 600,
-//       md: 600,
-//       lg: 1200,
-//       xl: 1536,
-//     },
-//   },
-// });
-
-// demo page
-function DemoPageContent({ pathname }) {
+function Sidebar() {
   return (
     <Box
       sx={{
-        py: 4,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        textAlign: 'center',
-      }}
-    >
-      <Typography>Content for {pathname}</Typography>
-    </Box>
-  );
-}
-
-DemoPageContent.propTypes = {
-  pathname: PropTypes.string.isRequired,
-};
-
-function DashboardLayoutBasic(props) {
-  const { window } = props;
-  const router = useDemoRouter('/dashboard');
-  const demoWindow = window !== undefined ? window() : undefined;
-
-  return (
-    <Box 
-      sx={{
         width: 250,
-        position: 'sticky',
+        position: "sticky",
         left: 0,
-        top: '0px', // Matches topbar height
+        top: "0px", // Matches topbar height
         bottom: 0, // Extend to bottom of viewport
         zIndex: 1000,
-        overflow: 'hidden', // Prevent internal scrolling
+        overflow: "hidden", // Prevent internal scrolling
       }}
     >
-      <AppProvider
-        navigation={NAVIGATION}
-        branding={{
-          logo: <img 
-            src={process.env.PUBLIC_URL + '/grub_logo.jpg'} 
-            alt="Logo"
-            style={{
-              width: '50px', 
-              height: 'auto',
-              margin: '10px 0 20px 0', // Add some vertical spacing
-              alignSelf: 'center',
-              display: 'block'
-            }}
-          />,
-          title: '',
-          homeUrl: '/home',
-        }}
-        router={router}
-        theme={createTheme({
-          cssVariables: { colorSchemeSelector: 'data-toolpad-color-scheme' },
-          colorSchemes: { light: true, dark: false },
+      <nav>
+        {NAVIGATION.map((item, index) => {
+          if (item.kind === "header") {
+            return (
+              <Typography key={index} variant="h6" sx={{ padding: "10px" }}>
+                {item.title}
+              </Typography>
+            );
+          }
+
+          if (item.kind === "divider") {
+            return <hr key={index} />;
+          }
+
+          if (item.children) {
+            return (
+              <div key={index}>
+                <Typography variant="subtitle1" sx={{ padding: "10px" }}>
+                  {item.title}
+                </Typography>
+                {item.children.map((child, childIndex) => (
+                  <Link
+                    key={childIndex}
+                    to={child.path}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      padding: "10px",
+                      textDecoration: "none",
+                      color: "inherit",
+                    }}
+                  >
+                    {child.icon}
+                    <span style={{ marginLeft: "10px" }}>{child.title}</span>
+                  </Link>
+                ))}
+              </div>
+            );
+          }
+
+          return (
+            <Link
+              key={index}
+              to={item.path}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                padding: "10px",
+                textDecoration: "none",
+                color: "inherit",
+              }}
+            >
+              {item.icon}
+              <span style={{ marginLeft: "10px" }}>{item.title}</span>
+            </Link>
+          );
         })}
-        window={demoWindow}
-      >
-        <DashboardLayout 
-          sx={{
-            '& .MuiToolpad-dashboardLayoutHeader': {
-              position: 'static', // Prevent fixed positioning
-              top: 0,
-              marginTop: 0,
-              paddingTop: 0
-            },
-            '& .MuiToolpad-dashboardLayoutNavigation': {
-              paddingTop: '20px', // Add padding to navigation items
-              gap: '10px' // Add some spacing between navigation items
-            }
-          }}
-        >
-          {/* Your existing navigation content */}
-        </DashboardLayout>
-      </AppProvider>
+      </nav>
     </Box>
   );
 }
 
-export default DashboardLayoutBasic;
+Sidebar.propTypes = {
+  window: PropTypes.func,
+};
+
+export default Sidebar;
