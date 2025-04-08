@@ -4,6 +4,7 @@ const cors = require("cors");
 const connectDB = require("../config/db.js");
 const authRoutes = require("../routes/authRoutes.cjs");
 const postRoutes = require("../routes/postRoutes.cjs");
+const nutritionRoutes = require("../routes/nutritionRoutes.cjs");
 const http = require("http"); // Import http to work with socket.io
 const socketIo = require("socket.io");
 const path = require('path');
@@ -32,6 +33,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/nutrition", nutritionRoutes);
 
 app.use('/api/posts', postRoutes(io));
 
