@@ -28,14 +28,14 @@ app.use(cors());
 //     next();
 // });
 
-// Serve static files from the 'uploads' directory
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
-
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/nutrition", nutritionRoutes);
 
 app.use('/api/posts', postRoutes(io));
+
+// Serve static files from the 'uploads' directory
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 io.on('connection', (socket) => {
     console.log('New client connected');

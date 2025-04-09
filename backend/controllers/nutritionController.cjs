@@ -4,6 +4,7 @@ const User = require('../models/User.cjs');
 const Meal = require('../models/Meal.cjs'); 
 
 exports.getNutritionInfo = async (req, res) => {
+  console.log("Request received:", req.body);
   const { foodName, email, mealType } = req.body;
 
   if (!foodName) {
