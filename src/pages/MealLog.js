@@ -1,12 +1,12 @@
 import Header from "../components/Header";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function MealLog() {
     const [formData, setFormData] = useState({
         mealType: "",
-        foodName: "", // Match backend expectation
+        foodName: "", 
         email: JSON.parse(localStorage.getItem("user"))?.email || "", // Get email from localStorage
     });
 
@@ -30,7 +30,7 @@ export default function MealLog() {
                 mealType: formData.mealType
             });
             console.log("Response Data:", res.data); // Debugging
-            navigate("/home");
+            //navigate("/home");
         } catch (err) {
             console.error("Error Response:", err); // Debugging
             setError("Failed to log meal. Please try again.");
@@ -53,7 +53,7 @@ export default function MealLog() {
                     </select>
                     <input
                         type="text"
-                        name="foodName" // Match backend expectation
+                        name="foodName" 
                         placeholder="Food Item"
                         value={formData.foodName}
                         onChange={handleChange}
