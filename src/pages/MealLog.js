@@ -1,36 +1,58 @@
 import Header from "../components/Header";
 import { useState } from "react";
-//import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function MealLog() {
     const [formData, setFormData] = useState({
         mealType: "",
-        foodName: "", 
+        foodItems: [{ foodName: "" }], // Array to store multiple food items
         email: JSON.parse(localStorage.getItem("user"))?.email || "", // Get email from localStorage
     });
 
     const [error, setError] = useState("");
-    //const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        console.log(`Field changed: ${e.target.name}, Value: ${e.target.value}`); // Debugging
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+    const handleChange = (e, index) => {
+        const { name, value } = e.target;
+
+        if (name === "mealType" || name === "email") {
+            setFormData({ ...formData, [name]: value });
+        } else {
+            const updatedFoodItems = [...formData.foodItems];
+            updatedFoodItems[index][name] = value;
+            setFormData({ ...formData, foodItems: updatedFoodItems });
+        }
+    };
+
+    const addFoodItem = () => {
+        const updatedFoodItems = [...formData.foodItems, { foodName: "" }];
+        console.log("Adding Food Item:", updatedFoodItems); // Debugging
+        setFormData({
+            ...formData,
+            foodItems: updatedFoodItems,
+        });
+    };
+
+    const removeFoodItem = (index) => {
+        const updatedFoodItems = formData.foodItems.filter((_, i) => i !== index);
+        console.log("Removing Food Item:", updatedFoodItems); // Debugging
+        setFormData({ ...formData, foodItems: updatedFoodItems });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("Form submitted", formData); // Debugging
 
-
         try {
-            const res = await axios.post("http://localhost:5001/api/nutrition/analyze", formData, {
-                foodName: formData.foodName,
-                email: formData.email,
-                mealType: formData.mealType
+            const res = await axios.post("http://localhost:5001/api/nutrition/analyze", formData);
+
+            // Clear the form entry after submission
+            setFormData({
+                mealType: "",
+                foodItems: [{ foodName: "" }],
+                email: JSON.parse(localStorage.getItem("user"))?.email || "", // Reset email from localStorage
             });
+
             console.log("Response Data:", res.data); // Debugging
-            //navigate("/home");
         } catch (err) {
             console.error("Error Response:", err); // Debugging
             setError("Failed to log meal. Please try again.");
@@ -44,21 +66,46 @@ export default function MealLog() {
                 <h2>Log Your Meal</h2>
                 {error && <p className="error-message">{error}</p>}
                 <form onSubmit={handleSubmit}>
-                    <select name="mealType" value={formData.mealType} onChange={handleChange} required>
-                        <option value="" disabled>Select Meal Type</option>
+                    <select
+                        name="mealType"
+                        value={formData.mealType}
+                        onChange={(e) => handleChange(e)}
+                        required
+                    >
+                        <option value="" disabled>
+                            Select Meal Type
+                        </option>
                         <option value="breakfast">Breakfast</option>
                         <option value="lunch">Lunch</option>
                         <option value="dinner">Dinner</option>
                         <option value="snack">Snack</option>
                     </select>
-                    <input
-                        type="text"
-                        name="foodName" 
-                        placeholder="Food Item"
-                        value={formData.foodName}
-                        onChange={handleChange}
-                        required
-                    />
+
+                    {formData.foodItems.map((item, index) => (
+                        <div key={index} className="food-item-input">
+                            <input
+                                type="text"
+                                name="foodName"
+                                placeholder={`Food Item ${index + 1}`}
+                                value={item.foodName}
+                                onChange={(e) => handleChange(e, index)}
+                                required
+                            />
+                            {formData.foodItems.length > 1 && (
+                                <button
+                                    type="button"
+                                    onClick={() => removeFoodItem(index)}
+                                >
+                                    Remove
+                                </button>
+                            )}
+                        </div>
+                    ))}
+
+                    <button type="button" onClick={addFoodItem}>
+                        + Add Food Item
+                    </button>
+
                     <button type="submit">Log Meal</button>
                 </form>
             </div>
