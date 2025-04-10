@@ -28,7 +28,7 @@ const NAVIGATION = [
   },
   {
     segment: "meallog",
-    title: "meallog",
+    title: "meal log",
     path: "/meallog",
   },
   {
