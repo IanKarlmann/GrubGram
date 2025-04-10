@@ -11,7 +11,7 @@ export default function MealLog() {
     });
 
     const [error, setError] = useState("");
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
 
     const handleChange = (e) => {
         console.log(`Field changed: ${e.target.name}, Value: ${e.target.value}`); // Debugging
