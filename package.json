@@ -27,6 +27,7 @@
     "web-vitals": "^4.2.4"
   },
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -50,7 +51,7 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "@babel/plugin-transform-private-property-in-object": "^7.25.9"
+  "resolutions": {
+    "@babel/plugin-transform-private-property-in-object": "7.21.0"
   }
 }
