@@ -1,6 +1,6 @@
-import Header from "../components/Header";
 import { useState } from "react";
 import axios from "axios";
+import "./meallog.css";
 
 export default function MealLog() {
     const [formData, setFormData] = useState({
@@ -61,7 +61,6 @@ export default function MealLog() {
 
     return (
         <div>
-            <Header />
             <div className="meal-log-container">
                 <h2>Log Your Meal</h2>
                 {error && <p className="error-message">{error}</p>}
