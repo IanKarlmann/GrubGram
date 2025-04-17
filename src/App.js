@@ -6,9 +6,24 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import SetupProfile from "./pages/SetupProfile"; 
 import MealLog from "./pages/MealLog";
+import "./App.css";
 
 function Navbar() {
   const navigate = useNavigate();
+
+  const handleBack = () => {
+    const currentPath = window.location.pathname;
+
+    if (currentPath === "/home") {
+      // Prevent navigating back to the login page
+      navigate("/home");
+    } else if (window.history.length > 1) {
+      navigate(-1); // Go back to the previous page
+    } else {
+      navigate("/home"); // Fallback to the homepage
+    }
+};
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -16,9 +31,14 @@ function Navbar() {
   };
 
   return (
-    <nav>
-      <button onClick={handleLogout}>Logout</button>
-    </nav>
+    <div className="nav-buttons">
+      <button className="back-btn" onClick={handleBack}>
+        Back
+      </button>
+      <button className="logout-btn" onClick={handleLogout}>
+        Logout
+      </button>
+    </div>
   );
 }
 

@@ -2,11 +2,21 @@ import { useState } from "react";
 import axios from "axios";
 import "./meallog.css";
 
+const getUserEmail = () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      return user?.email || "";
+    } catch (error) {
+      console.error("Error parsing user from localStorage:", error);
+      return ""; // Return an empty string if parsing fails
+    }
+  };
+
 export default function MealLog() {
     const [formData, setFormData] = useState({
         mealType: "",
         foodItems: [{ foodName: "" }], // Array to store multiple food items
-        email: JSON.parse(localStorage.getItem("user"))?.email || "", // Get email from localStorage
+        email: getUserEmail(), // Get email from localStorage
     });
 
     const [error, setError] = useState("");

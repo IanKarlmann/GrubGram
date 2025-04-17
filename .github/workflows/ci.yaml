@@ -73,6 +73,8 @@ jobs:
           body: "Release notes for version v${{ env.VERSION }}"
           draft: false
           prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Step 5: Deploy (Placeholder for deployment steps)
       - name: Deploy to Hosting Service
