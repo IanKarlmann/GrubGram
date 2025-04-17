@@ -8,6 +8,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import DescriptionIcon from "@mui/icons-material/Description";
 import { Link } from "react-router-dom"; // Import Link from React Router
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 const NAVIGATION = [
   {
@@ -28,7 +29,8 @@ const NAVIGATION = [
   },
   {
     segment: "meallog",
-    title: "meallog",
+    title: "meal log",
+    icon: <AddBoxIcon />,
     path: "/meallog",
   },
   {

@@ -1,38 +1,81 @@
-name: React CI
+name: GrubGram CI/CD
 
 on:
   push:
     branches:
-      - homepage
-      - login/registration
+      - development
       - main
   pull_request:
     branches:
-      - homepage
+      - development
 
 jobs:
-  build:
-    runs-on: windows-latest  # or any other OS
+  build-and-test:
+    runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      # Step 2: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.17.0'  # Ensure you're using the right Node version
+          node-version: '20.17.0'
 
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      - name: Build React app
-        run: npm run build  # This should generate the build/ directory
+      # Step 4: Run tests
+      - name: Run tests
+        run: npm test
 
+      # Step 5: Build the React app
+      - name: Build React app
+        run: npm run build
+
+      # Step 6: Upload build artifacts with versioning
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: react-build
-          path: ./build  # Adjust this path if your build output is somewhere else
+          name: react-build-v${{ github.run_number }}
+          path: ./build
+
+  release:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.17.0'
+
+      # Step 3: Extract version from package.json
+      - name: Get version from package.json
+        id: get_version
+        run: echo "VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
+
+      # Step 4: Create a GitHub release
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        with:
+          tag_name: v${{ env.VERSION }}
+          release_name: "GrubGram v${{ env.VERSION }}"
+          body: "Release notes for version v${{ env.VERSION }}"
+          draft: false
+          prerelease: false
+
+      # Step 5: Deploy (Placeholder for deployment steps)
+      - name: Deploy to Hosting Service
+        run: echo "Deploying version v${{ env.VERSION }}..."
+        # Add deployment commands here (e.g., Netlify, Vercel, or custom server)
 
 
