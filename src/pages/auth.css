@@ -13,6 +13,10 @@
 .logo {
     width: 100px; 
     margin-bottom: 15px;
+    display: block;
+    margin-left: auto; /* Center horizontally */
+    margin-right: auto; /* Center horizontally */
+    transform: translateX(-10px); /* Move slightly to the left */
 }
 
 /* Style form fields */
