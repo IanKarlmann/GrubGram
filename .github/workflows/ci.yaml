@@ -61,7 +61,7 @@ jobs:
       # Step 3: Extract version from package.json
       - name: Get version from package.json
         id: get_version
-        run: echo "VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
+        run: echo 'VERSION=$(node -p \"require(\"./package.json\").version\")' >> $GITHUB_ENV
         shell: bash
 
       # Step 4: Create a GitHub release
