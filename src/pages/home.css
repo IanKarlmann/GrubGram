@@ -9,16 +9,16 @@
 
 .feed-overlay {
   flex-grow: 1;
-  margin-left: 250px; /* Match sidebar width */
+  margin-left: 200px; /* Match sidebar width */
   padding: 20px;
-  width: calc(100% - 250px); /* Ensure full width minus sidebar */
+  width: calc(100% - 200px); /* Ensure full width minus sidebar */
   box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
   .feed-overlay {
-    margin-left: 80px;
-    width: calc(100% - 80px);
+    margin-left: 60px;
+    width: calc(100% - 60px);
   }
 }
 
