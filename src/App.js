@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import SetupProfile from "./pages/SetupProfile"; 
 import MealLog from "./pages/MealLog";
+import MealPlan from "./pages/MealPlan";
 import "./App.css";
 
 function Navbar() {
@@ -71,6 +72,7 @@ function App() {
         <Route path="/home" element={<ProtectedRoute><ProfileSetupRoute><Home /></ProfileSetupRoute></ProtectedRoute>} />
         <Route path="/account" element={<ProtectedRoute><ProfileSetupRoute><Account /></ProfileSetupRoute></ProtectedRoute>} />
         <Route path="/meallog" element={<ProtectedRoute><ProfileSetupRoute><MealLog /></ProfileSetupRoute></ProtectedRoute>} />
+        <Route path="/mealplan" element={<ProtectedRoute><ProfileSetupRoute><MealPlan /></ProfileSetupRoute></ProtectedRoute>} />
 
         {/* Redirect to home if authenticated, otherwise login */}
         <Route path="*" element={<Navigate to={isAuthenticated ? "/home" : "/login"} />} />

@@ -34,6 +34,11 @@ const NAVIGATION = [
     path: "/meallog",
   },
   {
+    segnment: "mealplan",
+    title: "meal plan",
+    path: "/mealplan",
+  },
+  {
     kind: "divider",
   },
   {

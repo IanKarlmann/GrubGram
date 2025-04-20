@@ -15,6 +15,12 @@ const getRecipes = async (mealType, calories, diet, health) => {
         'Edamam-Account-User': userId // Include the UserID in the headers
       }
     });
+
+    // made a change here to add a check if there isnt a recipe
+    if(!response.data.hits || response.data.hits.length == 0) {
+      return null;
+    }
+
     return response.data.hits.map(hit => hit.recipe);
   } catch (error) {
     console.error('Error fetching recipes:', error.response?.data || error.message);
@@ -34,9 +40,9 @@ const getMealPlan = async (req, res) => {
 
     // Respond with the generated meal plan
     res.json({
-      breakfast: breakfast[0],
-      lunch: lunch[0],
-      dinner: dinner[0]
+      breakfast: breakfast[0] && breakfast.length > 0 ? breakfast[0] : null,
+      lunch: lunch[0] && lunch.length > 0 ? lunch[0] : null,
+      dinner: dinner[0] && dinner.length > 0 ? dinner[0] : null,
     });
   } catch (error) {
     console.error(error);
