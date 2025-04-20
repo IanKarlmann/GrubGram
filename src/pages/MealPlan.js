@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-//import "./mealplan.css";
+import "./mealplan.css";
 
 export default function MealPlan() {
   const [filters, setFilters] = useState({
