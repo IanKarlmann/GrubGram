@@ -83,7 +83,8 @@ Fork the repository.
 Create a new branch for your feature or bug fix.
 Commit your changes and push them to your fork.
 Submit a pull request to the development branch.
-License
+
+License:
 This project is licensed under the MIT License.
 
 Acknowledgments
