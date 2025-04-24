@@ -1,4 +1,5 @@
-GrubGram
+### GrubGram
+
 GrubGram is a full-stack web application designed to help users manage their meals, track nutrition, and share their food experiences. It combines social media features with meal planning and logging tools, making it a comprehensive platform for food enthusiasts and health-conscious individuals.
 
 Features:
