@@ -5,7 +5,7 @@ const Meal = require('../models/Meal.cjs');
 
 exports.getNutritionInfo = async (req, res) => {
   console.log("Request received:", req.body);
-  const { foodItems, email, mealType } = req.body;
+  const { foodItems, email, mealType, date } = req.body;
 
   if (!foodItems || !Array.isArray(foodItems) || foodItems.length === 0) {
     return res.status(400).json({ error: 'Food items are required and must be an array' });
@@ -17,13 +17,16 @@ exports.getNutritionInfo = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const targetDate = date ? new Date(date) : new Date();
+    targetDate.setHours(0, 0, 0, 0);
+
+    const nextDay = new Date(targetDate);
+    nextDay.setDate(nextDay.getDate() + 1);
 
     const existingMeal = await Meal.findOne({
       userId: user._id,
       mealType,
-      consumedAt: { $gte: today }
+      consumedAt: { $gte: targetDate, $lt: nextDay }
     });
 
     const foodDetails = [];
@@ -63,7 +66,7 @@ exports.getNutritionInfo = async (req, res) => {
         userId: user._id,
         foodItems: foodDetails,
         mealType,
-        consumedAt: new Date()
+        consumedAt: date ? new Date(date) : new Date()
       });
 
       await meal.save();
