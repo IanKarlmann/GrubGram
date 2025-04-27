@@ -53,6 +53,8 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.6.3"
+    "@cyclonedx/cyclonedx-npm": "^2.1.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "auditjs": "^4.0.46"
   }
 }

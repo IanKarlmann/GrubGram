@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate} from "react-router-dom";
 import { useEffect, useState } from "react";
 import Home from "./pages/Home";
 import Account from "./pages/Account";
@@ -55,6 +55,7 @@ function ProfileSetupRoute({ children }) {
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  //const location = useLocation(); // Get the current location
 
   useEffect(() => {
     setIsAuthenticated(!!localStorage.getItem("token"));
