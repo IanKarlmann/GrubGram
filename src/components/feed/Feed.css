@@ -43,3 +43,89 @@
     font-size: 24px; /* Adjust font size as needed */
     font-weight: bold; /* Make the text bold */
   }
+
+/* Comment section styling */
+.post-comments {
+    margin-top: 15px;
+    border-top: 1px solid #eaeaea;
+    padding-top: 10px;
+  }
+  
+  .comments-toggle {
+    background-color: transparent;
+    border: none;
+    color: #4267B2;
+    cursor: pointer;
+    padding: 5px 0;
+    font-weight: 500;
+    display: block;
+    text-align: left;
+  }
+  
+  .comments-toggle:hover {
+    text-decoration: underline;
+  }
+  
+  .comments-container {
+    margin: 10px 0;
+  }
+  
+  .comment {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .comment:last-child {
+    border-bottom: none;
+  }
+  
+  .comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  
+  .comment-username {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .comment-date {
+    font-size: 0.8rem;
+    color: #777;
+  }
+  
+  .comment-content {
+    margin: 5px 0;
+    font-size: 0.95rem;
+  }
+  
+  .comment-form {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .comment-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+    min-height: 60px;
+    margin-bottom: 8px;
+  }
+  
+  .comment-submit-btn {
+    align-self: flex-end;
+    background-color: #4267B2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+  
+  .comment-submit-btn:hover {
+    background-color: #365899;
+  }
