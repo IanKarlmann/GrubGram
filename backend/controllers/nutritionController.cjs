@@ -77,3 +77,35 @@ exports.getNutritionInfo = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch nutrition info' });
   }
 };
+
+exports.getMacroData = async (req, res) => {
+  try {
+    const { email } = req.query;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const meals = await Meal.find({ userId: user._id });
+
+    const macroData = meals.map((meal) => ({
+      mealType: meal.mealType,
+      date: meal.consumedAt,
+      macros: meal.foodItems.reduce(
+        (totals, item) => ({
+          calories: totals.calories + item.calories,
+          protein: totals.protein + item.protein,
+          carbs: totals.carbs + item.carbs,
+          fat: totals.fat + item.fat,
+        }),
+        { calories: 0, protein: 0, carbs: 0, fat: 0 }
+      ),
+    }));
+
+    res.status(200).json(macroData);
+  } catch (err) {
+    console.error("Error fetching macro data:", err.message);
+    res.status(500).json({ error: 'Failed to fetch macro data' });
+  }
+};

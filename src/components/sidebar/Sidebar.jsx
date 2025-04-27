@@ -53,6 +53,13 @@ const NAVIGATION = [
     icon: <BarChartIcon />,
     children: [
       {
+        segment: "weight tracking",
+        title: "Weight Tracking",
+        icon: <DescriptionIcon />, // You can replace this with a more relevant icon
+        path: "/tracking/weight", // Add the route for weight tracking
+      },
+      
+      {
         segment: "macro tracking",
         title: "Macro Tracking",
         icon: <DescriptionIcon />,

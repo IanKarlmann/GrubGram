@@ -7,6 +7,10 @@ import Register from "./pages/Register";
 import SetupProfile from "./pages/SetupProfile"; 
 import MealLog from "./pages/MealLog";
 import MealPlan from "./pages/MealPlan";
+import CalorieTracking from "./pages/CalorieTracking";
+import MacroTracking from "./pages/MacroTracking";
+import WeightTracking from "./pages/WeightTracking";
+
 import "./App.css";
 
 function Navbar() {
@@ -73,7 +77,9 @@ function App() {
         <Route path="/account" element={<ProtectedRoute><ProfileSetupRoute><Account /></ProfileSetupRoute></ProtectedRoute>} />
         <Route path="/meallog" element={<ProtectedRoute><ProfileSetupRoute><MealLog /></ProfileSetupRoute></ProtectedRoute>} />
         <Route path="/mealplan" element={<ProtectedRoute><ProfileSetupRoute><MealPlan /></ProfileSetupRoute></ProtectedRoute>} />
-
+        <Route path="/tracking/calorie" element={<ProtectedRoute><ProfileSetupRoute><CalorieTracking /></ProfileSetupRoute></ProtectedRoute>} />
+        <Route path="/tracking/macro" element={<ProtectedRoute><ProfileSetupRoute><MacroTracking /></ProfileSetupRoute></ProtectedRoute>} />  
+        <Route path="/tracking/weight" element={<ProtectedRoute><ProfileSetupRoute><WeightTracking /></ProfileSetupRoute></ProtectedRoute>} /> 
         {/* Redirect to home if authenticated, otherwise login */}
         <Route path="*" element={<Navigate to={isAuthenticated ? "/home" : "/login"} />} />
       </Routes>

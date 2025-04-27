@@ -4,6 +4,7 @@ const cors = require("cors");
 const connectDB = require("../config/db.js");
 const authRoutes = require("../routes/authRoutes.cjs");
 const postRoutes = require("../routes/postRoutes.cjs");
+const weightRoutes = require("../routes/weightRoutes.cjs");
 
 const planRoutes = require("../routes/planRoutes.cjs"); // Import planRoutes
 
@@ -35,6 +36,7 @@ app.use(cors());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/nutrition", nutritionRoutes);
+app.use("/api/weight", weightRoutes);
 
 app.use('/api/posts', postRoutes(io));
 
