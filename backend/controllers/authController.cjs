@@ -9,20 +9,24 @@ const registerUser = async (req, res) => {
 
     const { fullName, email, password } = req.body;
 
+    // Validate required fields
     if (!fullName || !email || !password) {
       return res.status(400).json({ message: "All required fields must be filled." });
     }
 
+    // Check if the user already exists
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ message: "User already exists" });
 
+    // Hash the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    // Create a new user
     user = new User({
       fullName,
       email,
-      password: hashedPassword
+      password: hashedPassword,
     });
 
     await user.save();
@@ -71,7 +75,12 @@ const loginUser = async (req, res) => {
 // Setup User Profile (Step 2)
 const setupUserProfile = async (req, res) => {
   try {
-    const { userId, age, height, weight, activityLevel, goals, targetCalories, dietaryPreferences, allergies } = req.body;
+    const { userId, age, height, weight, weightGoal, activityLevel, goals, targetCalories, dietaryPreferences, allergies } = req.body;
+
+    // Validate weight
+    if (weight && (weight < 50 || weight > 700)) {
+      return res.status(400).json({ message: "Weight must be between 50 lbs and 700 lbs." });
+    }
 
     // Find user by ID
     const user = await User.findById(userId);
@@ -80,22 +89,23 @@ const setupUserProfile = async (req, res) => {
     // Update user profile fields
     user.age = age;
     user.height = height;
-    user.weight = weight;
+    user.weight = weight; // Save weight during profile setup
     user.activityLevel = activityLevel;
     user.goals = goals;
+    user.weightGoal = weightGoal; 
     user.targetCalories = targetCalories;
     user.dietaryPreferences = dietaryPreferences;
     user.allergies = allergies;
 
     await user.save();
     res.status(200).json({ message: "Profile updated successfully!" });
-
   } catch (error) {
     console.error("Profile Setup Error:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
 
+// Get User by ID
 const getUserById = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -112,6 +122,7 @@ const getUserById = async (req, res) => {
   }
 };
 
+// Update User Profile
 const updateUserProfile = async (req, res) => {
   try {
     const { userId, weight, activityLevel, goals, targetCalories, dietaryPreferences, allergies } = req.body;
@@ -121,7 +132,12 @@ const updateUserProfile = async (req, res) => {
     if (!user) return res.status(404).json({ message: "User not found" });
 
     // Update only the editable fields
-    user.weight = weight;
+    if (weight) {
+      if (weight < 50 || weight > 700) {
+        return res.status(400).json({ message: "Weight must be between 50 lbs and 700 lbs." });
+      }
+      user.weight = weight;
+    }
     user.activityLevel = activityLevel;
     user.goals = goals;
     user.targetCalories = targetCalories;

@@ -8,6 +8,8 @@ const UserSchema = new mongoose.Schema(
     age: { type: Number, required: false }, // Changed to optional
     height: { type: Number, required: false }, // Changed to optional
     weight: { type: Number, required: false }, // Changed to optional
+    weightGoal: { type: Number, required: false }, // User's weight goal
+  
     activityLevel: { 
       type: String, 
       enum: ["sedentary", "lightly active", "moderately active", "very active"], 

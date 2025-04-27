@@ -26,6 +26,7 @@ export default function SetupProfile() {
     age: "",
     height: "66", // Default to 5'6" (stored as inches)
     weight: "",
+    weightGoal: "",
     activityLevel: "sedentary",
     goals: "weight loss",
     targetCalories: "",
@@ -72,7 +73,15 @@ export default function SetupProfile() {
 
         <label>Weight</label> 
         <input type="number" name="weight" placeholder="Weight (in lbs)" value={formData.weight} onChange={handleChange} required />
-
+        <label>Weight Goal</label>
+        <input
+          type="number"
+          name="weightGoal"
+          placeholder="Set your weight goal (in lbs)"
+          value={formData.weightGoal}
+          onChange={handleChange}
+          required
+        />
         <label>Activity Level</label>
         <select name="activityLevel" value={formData.activityLevel} onChange={handleChange} required>
           <option value="sedentary">Sedentary</option>
