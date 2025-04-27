@@ -56,15 +56,9 @@
     ]
   },
   "devDependencies": {
-<<<<<<< HEAD
-    "@cyclonedx/cyclonedx-npm": "^2.1.0",
-    "@testing-library/jest-dom": "^6.6.3",
-    "auditjs": "^4.0.46"
-=======
     "@testing-library/jest-dom": "^6.6.3"
   },
   "overrides": {
     "react-refresh": "0.11.0"
->>>>>>> a568bb353b24e123fdf9e34488fe2e3872a847d5
   }
 }
