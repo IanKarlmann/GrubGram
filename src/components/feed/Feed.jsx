@@ -63,10 +63,105 @@ const Comments = ({ comments }) => {
   );
 };
 
+const ReportModal = ({ isOpen, onClose, postInfo, onSubmit }) => {
+    const [reason, setReason] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitMessage, setSubmitMessage] = useState('');
+  
+    if (!isOpen) return null;
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setIsSubmitting(true);
+      
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:5001/api/reports', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            postId: postInfo.id,
+            postTitle: postInfo.title,
+            postUsername: postInfo.username,
+            reason: reason
+          })
+        });
+        
+        if (response.ok) {
+          setSubmitMessage('Report submitted successfully');
+          setTimeout(() => {
+            setSubmitMessage('');
+            onClose();
+            setReason('');
+          }, 2000);
+        } else {
+          setSubmitMessage('Failed to submit report');
+        }
+      } catch (error) {
+        console.error('Error submitting report:', error);
+        setSubmitMessage('Error submitting report');
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
+  
+    return (
+      <div className="modal-overlay">
+        <div className="report-modal">
+          <h3>Report Post</h3>
+          <p>Post: "{postInfo.title}" by {postInfo.username}</p>
+          
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="reportReason">Reason for reporting:</label>
+              <textarea
+                id="reportReason"
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+                placeholder="Please explain why this post is inappropriate..."
+                required
+              />
+            </div>
+            
+            <div className="modal-actions">
+              <button 
+                type="button" 
+                className="cancel-btn" 
+                onClick={onClose}
+                disabled={isSubmitting}
+              >
+                Cancel
+              </button>
+              <button 
+                type="submit" 
+                className="submit-btn"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit Report'}
+              </button>
+            </div>
+            
+            {submitMessage && (
+              <div className={`submit-message ${submitMessage.includes('successfully') ? 'success' : 'error'}`}>
+                {submitMessage}
+              </div>
+            )}
+          </form>
+        </div>
+      </div>
+    );
+  };
+
 const Feed = ({ posts }) => {
   // State to manage updated comments
   const [updatedPosts, setUpdatedPosts] = useState({});
   const [expandedComments, setExpandedComments] = useState({});
+
+  const [reportModalOpen, setReportModalOpen] = useState(false);
+  const [reportingPost, setReportingPost] = useState(null);
   
   // Handler for when a comment is added
   const handleCommentAdded = (postId, newComments) => {
@@ -89,6 +184,21 @@ const Feed = ({ posts }) => {
     return updatedPosts[post._id] || post;
   };
 
+  const handleReportClick = (post) => {
+    setReportingPost({
+      id: post._id || post.id,
+      title: post.title,
+      username: post.username
+    });
+    setReportModalOpen(true);
+  };
+  
+  // Handler for closing the report modal
+  const handleCloseReportModal = () => {
+    setReportModalOpen(false);
+    setReportingPost(null);
+  };
+
   // Display posts from props or state
   const displayPosts = posts || [];
 
@@ -106,7 +216,17 @@ const Feed = ({ posts }) => {
             
             return (
               <div key={postId || Math.random()} className="post">
-                <h3>{currentPost.title}</h3>
+                <div className="post-header">
+                  <h3>{currentPost.title}</h3>
+                  <button 
+                    className="report-button"
+                    onClick={() => handleReportClick(currentPost)}
+                    title="Report this post"
+                  >
+                    ⚠️
+                  </button>
+                </div>
+                
                 <p>{currentPost.description}</p>
                 {currentPost.username && <p><strong>Posted by:</strong> {currentPost.username}</p>}
                 {currentPost.imageUrl && (
@@ -145,6 +265,17 @@ const Feed = ({ posts }) => {
           })
         )}
       </div>
+      
+      {/* Report Modal */}
+      <ReportModal 
+        isOpen={reportModalOpen}
+        onClose={handleCloseReportModal}
+        postInfo={reportingPost || {}}
+        onSubmit={() => {
+          // Handle successful submission if needed
+          handleCloseReportModal();
+        }}
+      />
     </div>
   );
 };

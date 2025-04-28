@@ -10,6 +10,8 @@ const planRoutes = require("../routes/planRoutes.cjs"); // Import planRoutes
 
 const nutritionRoutes = require("../routes/nutritionRoutes.cjs");
 
+const reportRoutes = require("../routes/reportRoutes.cjs");
+
 const http = require("http"); // Import http to work with socket.io
 const socketIo = require("socket.io");
 const path = require('path');
@@ -45,6 +47,8 @@ app.use('/api/meal-plan', planRoutes); // Add the meal plan routes
 
 // Serve static files from the 'uploads' directory
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
+app.use("/api/reports", reportRoutes);
 
 
 io.on('connection', (socket) => {
