@@ -5,6 +5,7 @@ const connectDB = require("../config/db.js");
 const authRoutes = require("../routes/authRoutes.cjs");
 const postRoutes = require("../routes/postRoutes.cjs");
 const weightRoutes = require("../routes/weightRoutes.cjs");
+const mealRoutes = require("../routes/mealHistoryRoute.cjs");
 
 const planRoutes = require("../routes/planRoutes.cjs"); // Import planRoutes
 
@@ -44,6 +45,8 @@ app.use('/api/posts', postRoutes(io));
 
 
 app.use('/api/meal-plan', planRoutes); // Add the meal plan routes
+
+app.use("/api/mealhistory", mealRoutes);
 
 // Serve static files from the 'uploads' directory
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));

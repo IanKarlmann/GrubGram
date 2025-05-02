@@ -10,6 +10,7 @@ import MealPlan from "./pages/MealPlan";
 import CalorieTracking from "./pages/CalorieTracking";
 import MacroTracking from "./pages/MacroTracking";
 import WeightTracking from "./pages/WeightTracking";
+import MealHistory from "./pages/mealHistory";
 
 import "./App.css";
 
@@ -81,6 +82,7 @@ function App() {
         <Route path="/tracking/calorie" element={<ProtectedRoute><ProfileSetupRoute><CalorieTracking /></ProfileSetupRoute></ProtectedRoute>} />
         <Route path="/tracking/macro" element={<ProtectedRoute><ProfileSetupRoute><MacroTracking /></ProfileSetupRoute></ProtectedRoute>} />  
         <Route path="/tracking/weight" element={<ProtectedRoute><ProfileSetupRoute><WeightTracking /></ProfileSetupRoute></ProtectedRoute>} /> 
+        <Route path="/mealHistory" element={<ProtectedRoute><ProfileSetupRoute><MealHistory /></ProfileSetupRoute></ProtectedRoute>} />
         {/* Redirect to home if authenticated, otherwise login */}
         <Route path="*" element={<Navigate to={isAuthenticated ? "/home" : "/login"} />} />
       </Routes>

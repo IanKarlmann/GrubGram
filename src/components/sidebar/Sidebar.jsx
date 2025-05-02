@@ -10,6 +10,7 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import { Link } from "react-router-dom"; // Import Link from React Router
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
+import ScheduleIcon from '@mui/icons-material/Schedule';
 
 const NAVIGATION = [
   {
@@ -39,6 +40,12 @@ const NAVIGATION = [
     title: "meal plan",
     icon: <RestaurantIcon />,
     path: "/mealplan",
+  },
+  {
+    segment: "mealHistory",
+    title: "Meal History",
+    icon: <ScheduleIcon />,
+    path: "/mealHistory",
   },
   {
     kind: "divider",
