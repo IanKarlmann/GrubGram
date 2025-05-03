@@ -6,11 +6,14 @@ import Typography from "@mui/material/Typography";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonIcon from "@mui/icons-material/Person";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import DescriptionIcon from "@mui/icons-material/Description";
 import { Link } from "react-router-dom"; // Import Link from React Router
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import ScheduleIcon from '@mui/icons-material/Schedule';
+//import GrassIcon from '@mui/icons-material/Grass';
+import BlenderIcon from '@mui/icons-material/Blender';
+import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
+import FastfoodIcon from '@mui/icons-material/Fastfood';
 
 const NAVIGATION = [
   {
@@ -62,20 +65,20 @@ const NAVIGATION = [
       {
         segment: "weight tracking",
         title: "Weight Tracking",
-        icon: <DescriptionIcon />, // You can replace this with a more relevant icon
+        icon: <MonitorWeightIcon />,
         path: "/tracking/weight", // Add the route for weight tracking
       },
       
       {
         segment: "macro tracking",
         title: "Macro Tracking",
-        icon: <DescriptionIcon />,
+        icon: <BlenderIcon />,
         path: "/tracking/macro", // Add path for routing
       },
       {
         segment: "calorie tracking",
         title: "Calorie Tracking",
-        icon: <DescriptionIcon />,
+        icon: <FastfoodIcon />,
         path: "/tracking/calorie", // Add path for routing
       },
     ],
