@@ -34,14 +34,14 @@ const WeightTracking = () => {
         const userId = JSON.parse(localStorage.getItem("user"))?.id;
 
         // Fetch weight history
-        const weightResponse = await axios.get("${process.env.REACT_APP_API_URL}/api/weight", {
+        const weightResponse = await axios.get("https://grubgram.onrender.com/api/weight", {
           params: { userId },
         });
 
         const history = weightResponse.data;
 
         // Fetch user data to get the weight goal
-        const userResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/auth/user/${userId}`);
+        const userResponse = await axios.get(`https://grubgram.onrender.com/api/auth/user/${userId}`);
         const user = userResponse.data;
 
         // Removed setting weightGoal state as we use user.weightGoal directly
@@ -90,7 +90,7 @@ const WeightTracking = () => {
     e.preventDefault();
     try {
       const userId = JSON.parse(localStorage.getItem("user"))?.id;
-      const response = await axios.post("${process.env.REACT_APP_API_URL}/api/weight/log", {
+      const response = await axios.post("$https://grubgram.onrender.com/api/weight/log", {
         userId,
         weight,
       });

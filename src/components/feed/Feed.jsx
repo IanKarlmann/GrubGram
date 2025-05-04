@@ -11,7 +11,7 @@ const CommentForm = ({ postId, onCommentAdded }) => {
     
     try {
       const token = localStorage.getItem('token'); // Get auth token
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/${postId}/comments`, {
+      const response = await fetch(`https://grubgram.onrender.com/api/posts/${postId}/comments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ const ReportModal = ({ isOpen, onClose, postInfo, onSubmit }) => {
       
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('${process.env.REACT_APP_API_URL}/api/reports', {
+        const response = await fetch('https://grubgram.onrender.com/api/reports', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -230,7 +230,7 @@ const Feed = ({ posts }) => {
                 {currentPost.username && <p><strong>Posted by:</strong> {currentPost.username}</p>}
                 {currentPost.imageUrl && (
                   <img 
-                    src={`${process.env.REACT_APP_API_URL}${currentPost.imageUrl}`} 
+                    src={`https://grubgram.onrender.com${currentPost.imageUrl}`} 
                     alt={currentPost.title} 
                     className="post-image"
                   />
