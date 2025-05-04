@@ -7,7 +7,7 @@ import CreatePostForm from "../components/forms/CreatePostForm";
 import "./home.css";
 import io from "socket.io-client";
 
-const API_BASE_URL = "http://localhost:5001/api/posts"; // backend URL
+const API_BASE_URL = "${process.env.REACT_APP_API_URL}/api/posts"; // backend URL
 
 export default function Home() {
     const [posts, setPosts] = useState([]);  
@@ -16,7 +16,7 @@ export default function Home() {
     useEffect(() => {
         fetchPosts(); // load posts on mount
 
-        const socket = io("http://localhost:5001");
+        const socket = io("${process.env.REACT_APP_API_URL}");
 
         socket.on("newPost", (post) =>{
             setPosts((prevPosts) => [post, ...prevPosts]);
