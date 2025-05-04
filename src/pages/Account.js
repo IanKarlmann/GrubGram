@@ -24,7 +24,7 @@ export default function Account() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const res = await axios.get(`http://localhost:5001/api/auth/user/${userId}`);
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/auth/user/${userId}`);
         const userData = res.data;
 
         setFormData({
@@ -54,7 +54,7 @@ export default function Account() {
     setError("");
 
     try {
-      await axios.put(`http://localhost:5001/api/auth/update-profile`, { userId, ...formData });
+      await axios.put(`${process.env.REACT_APP_API_URL}/api/auth/update-profile`, { userId, ...formData });
 
       alert("Profile updated successfully!");
       navigate("/dashboard");

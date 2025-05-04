@@ -32,7 +32,7 @@ const MacroTracking = () => {
     const fetchMacroData = async () => {
       try {
         const email = JSON.parse(localStorage.getItem("user"))?.email || "testuser@example.com";
-        const response = await axios.get("http://localhost:5001/api/nutrition/macros", {
+        const response = await axios.get("${process.env.REACT_APP_API_URL}/api/nutrition/macros", {
           params: { email },
         });
 

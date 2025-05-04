@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./mealHistory.css";
 
-const API_BASE_URL = "http://localhost:5001/api/mealhistory";
+const API_BASE_URL = "${process.env.REACT_APP_API_URL}/api/mealhistory";
 
 export default function MealHistory() {
     const [meals, setMeals] = useState([]);
