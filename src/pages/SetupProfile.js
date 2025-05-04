@@ -45,7 +45,7 @@ export default function SetupProfile() {
     setError("");
 
     try {
-      await axios.post("${process.env.REACT_APP_API_URL}/api/auth/setup-profile", { userId, ...formData });
+      await axios.post("https://grubgram.onrender.com/api/auth/setup-profile", { userId, ...formData });
 
       alert("Profile setup complete!");
       navigate("/dashboard"); // Redirect to main dashboard

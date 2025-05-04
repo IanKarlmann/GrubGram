@@ -22,7 +22,7 @@ export default function MealPlan() {
     setMealPlan(null);
 
     try {
-      const response = await axios.post("${process.env.REACT_APP_API_URL}/api/meal-plan", filters);
+      const response = await axios.post("https://grubgram.onrender.com/api/meal-plan", filters);
       setMealPlan(response.data);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to fetch meal plan.");

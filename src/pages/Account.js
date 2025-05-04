@@ -24,7 +24,7 @@ export default function Account() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/auth/user/${userId}`);
+        const res = await axios.get(`https://grubgram.onrender.com/api/auth/user/${userId}`);
         const userData = res.data;
 
         setFormData({
@@ -54,7 +54,7 @@ export default function Account() {
     setError("");
 
     try {
-      await axios.put(`${process.env.REACT_APP_API_URL}/api/auth/update-profile`, { userId, ...formData });
+      await axios.put(`https://grubgram.onrender.com/api/auth/update-profile`, { userId, ...formData });
 
       alert("Profile updated successfully!");
       navigate("/dashboard");
