@@ -26,7 +26,6 @@ ChartJS.register(
 const WeightTracking = () => {
   const [chartData, setChartData] = useState(null);
   const [weight, setWeight] = useState("");
-  const [weightGoal, setWeightGoal] = useState(null); // State for weight goal
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -45,7 +44,7 @@ const WeightTracking = () => {
         const userResponse = await axios.get(`http://localhost:5001/api/auth/user/${userId}`);
         const user = userResponse.data;
 
-        setWeightGoal(user.weightGoal || null); // Set weight goal from user profile
+        // Removed setting weightGoal state as we use user.weightGoal directly
 
         // Prepare data for the scatter plot
         const dataPoints = history.map((entry) => ({

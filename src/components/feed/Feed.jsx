@@ -204,7 +204,6 @@ const Feed = ({ posts }) => {
 
   return (
     <div className="feed">
-      <h2 className="feed-title">User Feed</h2>
       <div className="feed-posts">
         {displayPosts.length === 0 ? (
           <p>No posts available</p>

@@ -6,10 +6,15 @@ import Typography from "@mui/material/Typography";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonIcon from "@mui/icons-material/Person";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import DescriptionIcon from "@mui/icons-material/Description";
 import { Link } from "react-router-dom"; // Import Link from React Router
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
+import ScheduleIcon from '@mui/icons-material/Schedule';
+//import GrassIcon from '@mui/icons-material/Grass';
+import BlenderIcon from '@mui/icons-material/Blender';
+import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
+import FastfoodIcon from '@mui/icons-material/Fastfood';
+import "./sidebar.css";
 
 const NAVIGATION = [
   {
@@ -41,6 +46,12 @@ const NAVIGATION = [
     path: "/mealplan",
   },
   {
+    segment: "mealHistory",
+    title: "Meal History",
+    icon: <ScheduleIcon />,
+    path: "/mealHistory",
+  },
+  {
     kind: "divider",
   },
   {
@@ -55,20 +66,20 @@ const NAVIGATION = [
       {
         segment: "weight tracking",
         title: "Weight Tracking",
-        icon: <DescriptionIcon />, // You can replace this with a more relevant icon
+        icon: <MonitorWeightIcon />,
         path: "/tracking/weight", // Add the route for weight tracking
       },
       
       {
         segment: "macro tracking",
         title: "Macro Tracking",
-        icon: <DescriptionIcon />,
+        icon: <BlenderIcon />,
         path: "/tracking/macro", // Add path for routing
       },
       {
         segment: "calorie tracking",
         title: "Calorie Tracking",
-        icon: <DescriptionIcon />,
+        icon: <FastfoodIcon />,
         path: "/tracking/calorie", // Add path for routing
       },
     ],
@@ -77,49 +88,29 @@ const NAVIGATION = [
 
 function Sidebar() {
   return (
-    <Box
-      sx={{
-        width: 250,
-        position: "sticky",
-        left: 0,
-        top: "0px", // Matches topbar height
-        bottom: 0, // Extend to bottom of viewport
-        zIndex: 1000,
-        overflow: "hidden", // Prevent internal scrolling
-      }}
-    >
+    <Box className="sidebar-container">
       <nav>
         {NAVIGATION.map((item, index) => {
           if (item.kind === "header") {
             return (
-              <Typography key={index} variant="h6" sx={{ padding: "10px" }}>
+              <Typography className="sidebar-header">
                 {item.title}
               </Typography>
             );
           }
 
           if (item.kind === "divider") {
-            return <hr key={index} />;
+            return <hr key={index} className="sidebar-divider"/>;
           }
 
           if (item.children) {
             return (
               <div key={index}>
-                <Typography variant="subtitle1" sx={{ padding: "10px" }}>
+                <Typography className="sidebar-header">
                   {item.title}
                 </Typography>
                 {item.children.map((child, childIndex) => (
-                  <Link
-                    key={childIndex}
-                    to={child.path}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      padding: "10px",
-                      textDecoration: "none",
-                      color: "inherit",
-                    }}
-                  >
+                  <Link key={childIndex} to={child.path} className="sidebar-link">
                     {child.icon}
                     <span style={{ marginLeft: "10px" }}>{child.title}</span>
                   </Link>
@@ -129,17 +120,7 @@ function Sidebar() {
           }
 
           return (
-            <Link
-              key={index}
-              to={item.path}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                padding: "10px",
-                textDecoration: "none",
-                color: "inherit",
-              }}
-            >
+            <Link key={index} to={item.path} className="sidebar-link">
               {item.icon}
               <span style={{ marginLeft: "10px" }}>{item.title}</span>
             </Link>
