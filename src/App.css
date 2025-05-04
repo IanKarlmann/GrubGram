@@ -36,3 +36,65 @@
     transform: rotate(360deg);
   }
 }
+
+/* General button styles */
+.nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between buttons */
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+}
+
+.nav-buttons button {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Back button styles */
+.nav-buttons .back-btn {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.nav-buttons .back-btn:hover {
+  background-color: #e0e0e0;
+  transform: scale(1.05);
+}
+
+/* Logout button styles */
+.nav-buttons .logout-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+}
+
+.nav-buttons .logout-btn:hover {
+  background-color: #e60000;
+  transform: scale(1.05);
+}
+
+/* Back and Logout button styles */
+.nav-buttons button {
+  background-color: #007bff; /* Same as meallog submit button */
+  color: white;
+  border: none;
+  padding: 8px 12px; /* Slightly smaller padding */
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px; /* Slightly smaller font size */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.nav-buttons button:hover {
+  background-color: #0056b3; /* Same hover effect */
+  transform: scale(1.05); /* Slight hover scaling */
+}

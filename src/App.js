@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate} from "react-router-dom";
 import { useEffect, useState } from "react";
 import Home from "./pages/Home";
 import Account from "./pages/Account";
@@ -6,9 +6,30 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import SetupProfile from "./pages/SetupProfile"; 
 import MealLog from "./pages/MealLog";
+import MealPlan from "./pages/MealPlan";
+import CalorieTracking from "./pages/CalorieTracking";
+import MacroTracking from "./pages/MacroTracking";
+import WeightTracking from "./pages/WeightTracking";
+import MealHistory from "./pages/mealHistory";
+
+import "./App.css";
 
 function Navbar() {
   const navigate = useNavigate();
+
+  const handleBack = () => {
+    const currentPath = window.location.pathname;
+
+    if (currentPath === "/home") {
+      // Prevent navigating back to the login page
+      navigate("/home");
+    } else if (window.history.length > 1) {
+      navigate(-1); // Go back to the previous page
+    } else {
+      navigate("/home"); // Fallback to the homepage
+    }
+};
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -16,9 +37,14 @@ function Navbar() {
   };
 
   return (
-    <nav>
-      <button onClick={handleLogout}>Logout</button>
-    </nav>
+    <div className="nav-buttons">
+      <button className="back-btn" onClick={handleBack}>
+        Back
+      </button>
+      <button className="logout-btn" onClick={handleLogout}>
+        Logout
+      </button>
+    </div>
   );
 }
 
@@ -34,6 +60,7 @@ function ProfileSetupRoute({ children }) {
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  //const location = useLocation(); // Get the current location
 
   useEffect(() => {
     setIsAuthenticated(!!localStorage.getItem("token"));
@@ -51,7 +78,11 @@ function App() {
         <Route path="/home" element={<ProtectedRoute><ProfileSetupRoute><Home /></ProfileSetupRoute></ProtectedRoute>} />
         <Route path="/account" element={<ProtectedRoute><ProfileSetupRoute><Account /></ProfileSetupRoute></ProtectedRoute>} />
         <Route path="/meallog" element={<ProtectedRoute><ProfileSetupRoute><MealLog /></ProfileSetupRoute></ProtectedRoute>} />
-
+        <Route path="/mealplan" element={<ProtectedRoute><ProfileSetupRoute><MealPlan /></ProfileSetupRoute></ProtectedRoute>} />
+        <Route path="/tracking/calorie" element={<ProtectedRoute><ProfileSetupRoute><CalorieTracking /></ProfileSetupRoute></ProtectedRoute>} />
+        <Route path="/tracking/macro" element={<ProtectedRoute><ProfileSetupRoute><MacroTracking /></ProfileSetupRoute></ProtectedRoute>} />  
+        <Route path="/tracking/weight" element={<ProtectedRoute><ProfileSetupRoute><WeightTracking /></ProfileSetupRoute></ProtectedRoute>} /> 
+        <Route path="/mealHistory" element={<ProtectedRoute><ProfileSetupRoute><MealHistory /></ProfileSetupRoute></ProtectedRoute>} />
         {/* Redirect to home if authenticated, otherwise login */}
         <Route path="*" element={<Navigate to={isAuthenticated ? "/home" : "/login"} />} />
       </Routes>

@@ -1,34 +1,63 @@
+/* Global Reset & Base */
+body, html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+}
+
+/* Main Layout Container */
 .home-container {
   display: flex;
-  position: relative;
-  margin-top: 50px; /* Exact topbar height */
-  background-color: #f0f2f5;
+  margin-top: 50px; /* Align below Topbar */
   min-height: calc(100vh - 50px);
-  overflow-x: hidden; /* Prevent overall horizontal scrolling */
+  overflow-x: hidden;
+}
+
+/* Sidebar Placeholder */
+.sidebar {
+  width: 200px;
 }
 
 .feed-overlay {
   flex-grow: 1;
-  margin-left: 250px; /* Match sidebar width */
   padding: 20px;
-  width: calc(100% - 250px); /* Ensure full width minus sidebar */
+  margin-left: 200px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+/* Feed Styling */
+.feed {
+  width: 100%;
+  max-width: 700px;
+}
+
+/* Post Card Look */
+.post-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: box-shadow 0.2s ease;
+}
+
+.post-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Responsive Adjustments */
 @media (max-width: 768px) {
   .feed-overlay {
-    margin-left: 80px;
-    width: calc(100% - 80px);
+    margin-left: 0;
+    padding: 10px;
   }
-}
 
-.feed {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-/* Prevent any unexpected horizontal scrolling */
-body, html {
-  overflow-x: hidden;
-  max-width: 100%;
+  .sidebar {
+    display: none;
+  }
 }

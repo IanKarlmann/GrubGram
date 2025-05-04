@@ -1,70 +1,94 @@
-# Getting Started with Create React App
+### GrubGram
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+GrubGram is a full-stack web application designed to help users manage their meals, track nutrition, and share their food experiences. It combines social media features with meal planning and logging tools, making it a comprehensive platform for food enthusiasts and health-conscious individuals.
 
-## Available Scripts
+Features:
 
-In the project directory, you can run:
+User Authentication
+### Registration: Users can sign up with their full name, email, and password.
+### Login: Secure login using JWT-based authentication.
+### Profile Setup: Users can set up their profile with details like age, height, weight, activity level, dietary preferences, and allergies.
 
-### `npm start`
+Meal Management
+### Meal Logging: Log meals with detailed food items and nutritional information fetched from the Nutritionix API.
+### Meal Planning: Generate personalized meal plans using the Edamam API based on meal type, calorie range, diet, and health preferences.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Social Features
+### Feed: View posts shared by other users, including images, titles, and descriptions.
+### Create Posts: Share food experiences by creating posts with optional image uploads.
+### Comments: Add and manage comments on posts.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Analytics
+### Macro and Calorie Tracking: (Planned feature) Analyze nutritional intake and track progress over time.
+### Responsive Design
+### Optimized for both desktop and mobile devices with a clean and user-friendly interface.
 
-### `npm test`
+Tech Stack:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Frontend
+### React: For building the user interface.
+### React Router: For client-side routing.
+### Axios: For making API requests.
+### Socket.IO Client: For real-time updates in the feed.
+### CSS: Custom styles for a polished look.
 
-### `npm run build`
+Backend
+### Node.js: Server-side runtime.
+### Express: Web framework for building RESTful APIs.
+### MongoDB: Database for storing user data, posts, and meal logs.
+### Mongoose: ODM for MongoDB.
+### Socket.IO: For real-time communication.
+### Multer: For handling image uploads.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+APIs
+### Nutritionix API: For analyzing nutritional information of food items.
+### Edamam API: For generating meal plans.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Installation
+Prerequisites
+Node.js (v20.17.0 or later)
+MongoDB (local or cloud instance)
+Environment variables for API keys and database connection.
+Steps
+Clone the repository:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+git clone https://github.com/your-username/GrubGram.git
+cd GrubGram
 
-### `npm run eject`
+Install dependencies:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+npm install
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Set up environment variables: Create a .env file in the config directory with the following:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+NUTRITIONIX_APP_ID=your_nutritionix_app_id
+NUTRITIONIX_API_KEY=your_nutritionix_api_key
+EDAMAM_APP_ID=your_edamam_app_id
+EDAMAM_APP_KEY=your_edamam_app_key
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Start the backend server:
 
-## Learn More
+npm run backend
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Start the frontend:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+npm start
 
-### Code Splitting
+Contributing
+We welcome contributions! Please follow these steps:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Fork the repository.
+Create a new branch for your feature or bug fix.
+Commit your changes and push them to your fork.
+Submit a pull request to the development branch.
 
-### Analyzing the Bundle Size
+License:
+This project is licensed under the MIT License.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Acknowledgments
+Nutritionix API
+Edamam API
+Create React App
+MUI for Material-UI components.

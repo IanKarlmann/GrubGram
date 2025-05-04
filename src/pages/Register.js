@@ -40,7 +40,7 @@ export default function Register() {
 
   return (
     <div className="auth-container">
-      <img src="/logo.jpg" alt="GrubGram Logo" className="logo" />
+      <img src="/grub_logo.jpg" alt="GrubGram Logo" className="logo" />
       <h2>Register</h2>
       {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>
