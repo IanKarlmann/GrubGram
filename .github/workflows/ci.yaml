@@ -46,6 +46,11 @@ jobs:
   release:
     needs: build-and-test
     runs-on: ubuntu-latest
+    # Add permissions block here
+    permissions:
+      contents: write # This is crucial for creating releases
+      issues: write
+      pull-requests: write
 
     steps:
       # Step 1: Checkout the repository
@@ -61,22 +66,28 @@ jobs:
       # Step 3: Extract version from package.json
       - name: Get version from package.json
         id: get_version
-        run: echo 'VERSION=$(node -p \"require(\"./package.json\").version\")' >> $GITHUB_ENV
+        run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
         shell: bash
 
-      # Step 4: Create a GitHub release
+      # Step 4: Install GitHub CLI
+      - name: Install GitHub CLI
+        run: |
+          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+          sudo apt update
+          sudo apt install gh
+
+      # Step 5: Create a GitHub release using GitHub CLI
       - name: Create GitHub Release
-        uses: actions/create-release@v1
-        with:
-          tag_name: v${{ env.VERSION }}
-          release_name: "GrubGram v${{ env.VERSION }}"
-          body: "Release notes for version v${{ env.VERSION }}"
-          draft: false
-          prerelease: false
+        run: |
+          gh release create v${{ env.VERSION }} \
+            --title "GrubGram v${{ env.VERSION }}" \
+            --notes "Release notes for version v${{ env.VERSION }}" \
+            --repo ${{ github.repository }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Step 5: Deploy (Placeholder for deployment steps)
+      # Step 6: Deploy (Placeholder for deployment steps)
       - name: Deploy to Hosting Service
         run: echo "Deploying version v${{ env.VERSION }}..."
         # Add deployment commands here (e.g., Netlify, Vercel, or custom server)
