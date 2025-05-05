@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 // Extract environment variables for readability
 const appId = process.env.EDAMAM_APP_ID;
 const appKey = process.env.EDAMAM_APP_KEY;
-const userID = process.env.EDAMAM_USER_ID;
+const userId = process.env.EDAMAM_USER_ID;
 
 const getMealPlan = async (req, res) => {
     try {
@@ -117,7 +117,7 @@ const getMealPlan = async (req, res) => {
         const planUrl = `https://api.edamam.com/api/meal-planner/v1/${appId}/select?app_id=${appId}&app_key=${appKey}`;
         const headers = {
             'Content-Type': 'application/json',
-            'Edamam-Account-User': userID
+            'Edamam-Account-User': userId
         };
 
         // Make the POST request to the Edamam API
