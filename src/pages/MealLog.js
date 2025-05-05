@@ -53,7 +53,7 @@ export default function MealLog() {
         console.log("Form submitted", formData); // Debugging
 
         try {
-            const res = await axios.post("http://localhost:5001/api/nutrition/analyze", formData);
+            const res = await axios.post("https://grubgram.onrender.com/api/nutrition/analyze", formData);
 
             // Clear the form entry after submission
             setFormData({

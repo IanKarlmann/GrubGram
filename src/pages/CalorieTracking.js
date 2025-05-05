@@ -29,7 +29,7 @@ const CalorieTracking = () => {
     const fetchCalorieData = async () => {
       try {
         const email = JSON.parse(localStorage.getItem("user"))?.email || "testuser@example.com";
-        const response = await axios.get("http://localhost:5001/api/nutrition/macros", {
+        const response = await axios.get("https://grubgram.onrender.com/api/nutrition/macros", {
           params: { email },
         });
 

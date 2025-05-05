@@ -17,7 +17,7 @@ export default function Login() {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:5001/api/auth/login", formData);
+      const res = await axios.post("https://grubgram.onrender.com/api/auth/login", formData);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       navigate("/home", {replace: true}); // Redirect after login

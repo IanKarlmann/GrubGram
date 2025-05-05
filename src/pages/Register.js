@@ -22,7 +22,7 @@ export default function Register() {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:5001/api/auth/register", formData);
+      const res = await axios.post("https://grubgram.onrender.com/api/auth/register", formData);
 
       if (res.data.userId) {
         // Store userId in localStorage
