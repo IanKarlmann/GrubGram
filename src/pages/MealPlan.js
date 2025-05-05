@@ -13,20 +13,8 @@ export default function MealPlan() {
     setMealPlan(null);
 
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        setError("No token found. Please log in again.");
-        return;
-      }
-
       const response = await axios.post(
-        "https://grubgram.onrender.com/api/meal-plan",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        "https://grubgram.onrender.com/api/meal-plan"
       );
       setMealPlan(response.data);
       console.log("Meal Plan Data:", response.data);
