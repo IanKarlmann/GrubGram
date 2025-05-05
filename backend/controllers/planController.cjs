@@ -9,7 +9,7 @@ const appKey = process.env.EDAMAM_APP_KEY;
 const getMealPlan = async (req, res) => {
     try {
         
-        const userId = 'process.env.USER_ID'; 
+        const userId = '6817f1b19cf7295f1f393d6b'; 
 
         // Fetch user information from the database
         const user = await User.findById(userId);
