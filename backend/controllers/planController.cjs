@@ -8,14 +8,8 @@ const appKey = process.env.EDAMAM_APP_KEY;
 
 const getMealPlan = async (req, res) => {
     try {
-        // Extract user ID from the JWT token in the request headers
-        const token = req.headers.authorization?.split(" ")[1];
-        if (!token) {
-            return res.status(401).json({ message: "No token provided, authorization denied" });
-        }
-
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const userId = decoded.id;
+        
+        const userId = '6817f1b19cf7295f1f393d6b';
 
         // Fetch user information from the database
         const user = await User.findById(userId);
