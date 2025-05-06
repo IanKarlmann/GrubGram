@@ -12,8 +12,9 @@ const getMealPlan = async (req, res) => {
         const { user } = req.body;
 
         if (!user) {
-            return res.status(400).json({ message: "User object is required" });
+            console.log("Error: User not found in request body");
           }
+          console.log("User data:", user); // Debugging line
 
         // Populate "health" and "diet" based on user preferences
         const healthPreferences = [];
@@ -32,6 +33,8 @@ const getMealPlan = async (req, res) => {
             }
             // If "no preference", do nothing
         }
+
+        console.log("Health Preferences:", healthPreferences); // Debugging line
 
         // Prepare the request body
         const requestBody = {
@@ -119,6 +122,8 @@ const getMealPlan = async (req, res) => {
             'Edamam-Account-User': 'user'
         };
 
+        console.log("Request Body:", JSON.stringify(requestBody, null, 2)); // Debugging line
+
         // Make the POST request to the Edamam API
         const planResponse = await axios.post(planUrl, requestBody, { headers });
         
@@ -165,7 +170,7 @@ const getMealPlan = async (req, res) => {
         // console.log("user.allergies:", user.allergies);
         // console.log("user.dietaryPreferences:", user.dietaryPreferences);
         // console.log("healthPreferences:", healthPreferences);
-        console.log("Request Body:", JSON.stringify(requestBody, null, 2));
+        // console.log("Request Body:", JSON.stringify(requestBody, null, 2));
         // POST response data
         // console.log("POST Response Data:", JSON.stringify(planResponse.data, null, 2));
         // console.log("Assigned Breakfast URIs:", breakfastURIs);
