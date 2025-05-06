@@ -9,21 +9,30 @@ const appKey = process.env.EDAMAM_APP_KEY;
 const getMealPlan = async (req, res) => {
     try {
 
-        const { user } = req.body;
+        // Extract user ID from the request body
+        const { userId } = req.body;
 
-        if (!user) {
-            console.log("Error: User not found in request body");
+        // Check if userId is present in the request body
+        if (!userId) {
+            console.log("Error: UserId not found in request body");
           }
-          console.log("User data:", user); // Debugging line
+          console.log("UserId:", userId); // Debugging line
+
+        // Fetch user data from the database
+        const user = await User.findById(userId);
+        console.log("User Data:", user); // Debugging line
 
         // Populate "health" and "diet" based on user preferences
         const healthPreferences = [];
 
         // Add allergies to healthPreferences
         if (user.allergies && user.allergies.length > 0) {
-            healthPreferences.push(...user.allergies.join(",").split(",").map(allergy => `${allergy.toLowerCase()}-free`));
-        }
-
+            healthPreferences.push(
+                ...user.allergies
+                    .filter((allergy) => allergy.trim() !== "") // Filter out empty strings
+                    .map((allergy) => `${allergy.toLowerCase()}-free`) // Convert to lowercase and append '-free'
+            );
+}
         // Add dietary preferences to healthPreferences
         if (user.dietaryPreferences) {
             if (user.dietaryPreferences === "vegetarian" || user.dietaryPreferences === "vegan" || user.dietaryPreferences === "paleo") {
