@@ -13,9 +13,18 @@ export default function MealPlan() {
     setMealPlan(null);
 
     try {
+      // Retrieve the user ID from localStorage
+      const user = JSON.parse(localStorage.getItem("user"));
+      const userId = user?.id; // Extract the user ID
+
+      console.log("User ID:", userId); // Debugging line
+
+      // Send the user ID to the backend to fetch the meal plan
       const response = await axios.post(
-        "https://grubgram.onrender.com/api/meal-plan"
+        "https://grubgram.onrender.com/api/meal-plan",
+        {userId}
       );
+      
       setMealPlan(response.data);
       console.log("Meal Plan Data:", response.data);
     } catch (err) {

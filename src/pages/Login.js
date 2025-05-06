@@ -20,6 +20,7 @@ export default function Login() {
       const res = await axios.post("https://grubgram.onrender.com/api/auth/login", formData);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
+      console.log("user", res.data.user); // Debugging line
       navigate("/home", {replace: true}); // Redirect after login
     } catch (err) {
       setError(err.response?.data?.message || "Login failed. Please try again.");

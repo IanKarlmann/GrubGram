@@ -5,16 +5,11 @@ const jwt = require("jsonwebtoken");
 // Extract environment variables for readability
 const appId = process.env.EDAMAM_APP_ID;
 const appKey = process.env.EDAMAM_APP_KEY;
-const userId = process.env.EDAMAM_USER_ID;
 
 const getMealPlan = async (req, res) => {
     try {
 
-        // Fetch user information from the database
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
+        const { userId } = req.body;
 
         // Populate "health" and "diet" based on user preferences
         const healthPreferences = [];
@@ -166,13 +161,16 @@ const getMealPlan = async (req, res) => {
         // console.log("user.allergies:", user.allergies);
         // console.log("user.dietaryPreferences:", user.dietaryPreferences);
         // console.log("healthPreferences:", healthPreferences);
-        // console.log("Request Body:", JSON.stringify(requestBody, null, 2));
+        console.log("Request Body:", JSON.stringify(requestBody, null, 2));
         // POST response data
         // console.log("POST Response Data:", JSON.stringify(planResponse.data, null, 2));
         // console.log("Assigned Breakfast URIs:", breakfastURIs);
         // console.log("Assigned Lunch URIs:", lunchURIs);
         // console.log("Assigned Dinner URIs:", dinnerURIs);
         // GET request details
+        console.log("Breakfast Request URL:", breakfastUrl);
+        console.log("lunch Request URL:", lunchUrl);
+        console.log("Dinner Request URL:", dinnerUrl);
         // console.log("Meals Request URL:", mealsUrl);
         // console.log("Meals Request Headers:", mealsHeaders);
         // GET response data
