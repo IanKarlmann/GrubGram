@@ -9,7 +9,11 @@ const appKey = process.env.EDAMAM_APP_KEY;
 const getMealPlan = async (req, res) => {
     try {
 
-        const { userId } = req.body;
+        const { user } = req.body;
+
+        if (!user) {
+            return res.status(400).json({ message: "User object is required" });
+          }
 
         // Populate "health" and "diet" based on user preferences
         const healthPreferences = [];
@@ -112,7 +116,7 @@ const getMealPlan = async (req, res) => {
         const planUrl = `https://api.edamam.com/api/meal-planner/v1/${appId}/select?app_id=${appId}&app_key=${appKey}`;
         const headers = {
             'Content-Type': 'application/json',
-            'Edamam-Account-User': userId
+            'Edamam-Account-User': 'user'
         };
 
         // Make the POST request to the Edamam API
