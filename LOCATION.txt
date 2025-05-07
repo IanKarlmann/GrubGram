@@ -1,1 +1,8 @@
-https://github.com/IanKarlmann/GrubGram/releases/tag/v1.0
+Website (Frontend):
+https://grubgram.vercel.app
+
+API Endpoint (Backend):
+https://grubgram-api.onrender.com
+
+GitHub Release (Binaries):
+https://github.com/IanKarlmann/GrubGram/releases/tag/v1.0.0
